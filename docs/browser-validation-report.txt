@@ -1,0 +1,28 @@
+PASS Three century pages are present
+PASS Exactly one century is active initially
+PASS Exactly one century is visible initially
+PASS Previous button is disabled on first page
+PASS Pagination labels first page correctly
+PASS First page names the dominant native-style kingdom
+PASS Next button advances exactly one century
+PASS Century header remains below the sticky navigation after turning a page
+PASS Only one page remains visible after next navigation
+PASS Second page is the second century
+PASS Facts expand within the same century page
+PASS Expanded facts preserve city names
+PASS Index opens
+PASS Index selects the requested century
+PASS Next button is disabled on last page
+PASS Last century remains in progress
+PASS Left arrow turns to previous century
+PASS Right arrow turns to next century
+PASS Previous button turns back
+PASS Mobile century header is not covered by the sticky navigation
+PASS Mobile-width page does not overflow horizontally
+PASS No JavaScript runtime errors
+PASS Book requests no external network resources
+PASS Without JavaScript all three pages remain readable in sequence
+PASS JavaScript navigation controls stay hidden without JavaScript
+RESULT 25 passed, 0 failed
+HTML SHA256 741d6784a2052389ed085206724995b997c714ecb148d4233849df1919d1baff
+Scope: HTML export only; WorldBox/Unity was not executed.

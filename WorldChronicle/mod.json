@@ -1,0 +1,18 @@
+{
+  "name": "Cronista do Mundo",
+  "author": "WorldChronicle",
+  "version": "0.2.0",
+  "GUID": "worldchronicle.cronistadomundo",
+  "description": "Um livro histórico para cada mundo, com uma página por século, contexto dos acontecimentos e destaque das nações ao longo dos anos. Protótipo para WorldBox 0.51.2 com NeoModLoader.",
+  "iconPath": "icon.png",
+  "Dependencies": [],
+  "OptionalDependencies": [],
+  "IncompatibleWith": [],
+  "UsePublicizedAssembly": true,
+  "ModType": 0,
+  "ai_attribution": "ai_made",
+  "ai_check_code": true,
+  "ai_check_art": true,
+  "ai_check_translation": true,
+  "tags": ["UI & QoL"]
+}

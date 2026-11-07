@@ -1,0 +1,32 @@
+PASS compressed roundtrip preserves Unicode and every event field
+PASS old save cannot inherit future events
+PASS loaded journal does not share mutable event references
+PASS two worlds preserve separate identities
+PASS duplicate event IDs are rejected
+PASS duplicate event sequence is rejected
+PASS out-of-order checkpoint events are rejected
+PASS incomplete last sequence is rejected
+PASS unknown schema is rejected without migration
+PASS invalid world identifier is rejected
+PASS corrupt base64 payload is rejected
+PASS non-gzip compressed payload is rejected
+PASS empty save payload is rejected
+PASS JSON $type cannot instantiate a foreign type
+PASS event metadata $type is ignored
+PASS HTML neutralizes game names, IDs and detail markup
+PASS Markdown neutralizes links and raw HTML in names
+PASS observed disappearance does not claim city destruction
+PASS observed city appearance does not claim foundation
+PASS ruler change does not invent death
+PASS war closure does not invent victory or a treaty
+PASS direct capture uses conquest only with direct evidence
+PASS detail text cannot become invented causes in prose
+PASS narrative follows sequence despite unsorted input
+PASS HTML preserves event IDs and timestamps for audit
+PASS chapter boundary at next decade is preserved
+PASS empty world can save and render without invented history
+PASS 1000 events survive compression and narrative generation
+PASS nonfinite world times are rejected
+PASS unrecognized evidence is rejected
+RESULT 30/30 passed
+Scope: standalone .NET 8 core tests with NML's real Newtonsoft.Json; game/Unity hooks and other mods were not executed.

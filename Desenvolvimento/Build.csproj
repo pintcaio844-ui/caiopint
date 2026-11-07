@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework><LangVersion>7.3</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems><GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>WorldChronicle</AssemblyName>
+    <ManagedPath>$(GamePath)/worldbox_Data/Managed</ManagedPath>
+    <NmlCache>$(GamePath)/worldbox_Data/StreamingAssets/mods/NML</NmlCache>
+    <NmlDll Condition="'$(NmlDll)' == ''">$(GamePath)/worldbox_Data/StreamingAssets/mods/NeoModLoader.dll</NmlDll>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../WorldChronicle/Code/**/*.cs" />
+    <Reference Include="NeoModLoader"><HintPath>$(NmlDll)</HintPath></Reference>
+    <Reference Include="0Harmony"><HintPath>$(NmlCache)/Assemblies/0Harmony.dll</HintPath></Reference>
+    <Reference Include="Assembly-CSharp"><HintPath>$(NmlCache)/Assembly-CSharp-Publicized.dll</HintPath></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(ManagedPath)/Newtonsoft.Json.dll</HintPath></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(ManagedPath)/UnityEngine.dll</HintPath></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ManagedPath)/UnityEngine.CoreModule.dll</HintPath></Reference>
+    <Reference Include="UnityEngine.IMGUIModule"><HintPath>$(ManagedPath)/UnityEngine.IMGUIModule.dll</HintPath></Reference>
+    <Reference Include="UnityEngine.InputLegacyModule"><HintPath>$(ManagedPath)/UnityEngine.InputLegacyModule.dll</HintPath></Reference>
+    <Reference Include="UnityEngine.TextRenderingModule"><HintPath>$(ManagedPath)/UnityEngine.TextRenderingModule.dll</HintPath></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(ManagedPath)/UnityEngine.UI.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

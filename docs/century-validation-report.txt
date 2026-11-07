@@ -1,0 +1,53 @@
+PASS year 99 stays in first partial century
+PASS year 100 closes first century and opens second
+PASS year 199 remains the second partial century
+PASS year 200 closes second century and opens third
+PASS completed century object is unchanged by future events
+PASS future dominance cannot change a past century score
+PASS current page ends at the observed current year
+PASS no metrics produce no invented dominant nation
+PASS no events cannot be narrated as confirmed peace
+PASS installation in year 150 does not create years 0 through 99
+PASS late installation century remains partial when it closes
+PASS all 100 sampled years make complete coverage
+PASS territory population and army use weights 50 30 20
+PASS normalization occurs separately for every observed year
+PASS absent and extinct nations contribute zero in later observed years
+PASS positive score ties do not choose an arbitrary single nation
+PASS zero indicators do not establish dominance or fabricated equality
+PASS zero denominators add zero without renormalizing other weights
+PASS empty observed year still counts absence as zero
+PASS missing calendar years are not fabricated as annual samples
+PASS renaming a realm with the same ID keeps one nation
+PASS future rename does not rewrite a closed century name
+PASS book HTML escapes Unicode nation names and markup
+PASS book Markdown treats game names as literal text
+PASS save checkpoint before future centuries restores only its book pages
+PASS loaded old save branches independently from the live future book
+PASS duplicate annual observations are rejected by the save store
+PASS duplicate nation IDs in one snapshot are rejected
+PASS negative annual indicators are rejected
+PASS invalid page interval is rejected by the save store
+PASS nonfinite ranking score is rejected
+PASS old v0.1 save without book fields loads without invented samples
+PASS extinction arc links foundation in an earlier century by ID
+PASS extinction context preserves earlier war city loss rename and ruler
+PASS same name with a different realm ID cannot supply a foundation
+PASS explicit CityData rename cannot become a kingdom rename by ID collision
+PASS explicit city context with colliding ID cannot become lost kingdom territory
+PASS explicit city war participant cannot become an extinct kingdom reference
+PASS wrong entity type cannot supply a realm foundation
+PASS wrong entity type cannot supply a previous realm ruler
+PASS all captured names survive beyond summary highlight limits
+PASS capturing realm ruler is named without invented battlefield command
+PASS culture trait observation does not invent an inventor or author
+PASS book writing credits the recorded author when author role is confirmed
+PASS unconfirmed book actor cannot be promoted to author
+PASS edited realm names are preserved verbatim in facts and escaped in exports
+RESULT 46/46 passed
+SHA256 5618619df4a91ef56d905f3e239890cc48ab3f260df93f222c66fd302f037f20 /workspace/work/WorldChronicle/Code/Core/CenturyBook.cs
+SHA256 db864a4b07df84e677402f01501ac7d23ac424bc690d3ab65527e815661394a2 /workspace/work/WorldChronicle/Code/Core/Narrative.cs
+SHA256 0ce458e8b5aab0249d15555dd84cd4126cb079ed4b2fee3dbe6e14ccaf837eb9 /workspace/work/WorldChronicle/Code/Core/Models.cs
+SHA256 ac9cc1ab1eb8aece124a87d475a24c89aa3b683509f3125f8648bd9f60bc64fe /workspace/work/WorldChronicle/Code/Core/JournalStore.cs
+Scope: .NET8 unit/behavior tests of century aggregation, save checkpoints and book rendering. Example data is entirely fictional.
+Limitations: no WorldBox/Unity execution, no empirical timing validation of yearly sampling, and no proof of coexistence with subscribed mods. Manual time reversal is handled by the runtime; tested rollback uses an old saved checkpoint.

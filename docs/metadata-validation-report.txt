@@ -1,0 +1,342 @@
+PASS source contains exactly 24 parsed target registrations
+PASS target MapBox.clearWorld() exists uniquely
+PASS MapBox.clearWorld -> Changing is a unique static hook
+PASS MapBox.clearWorld -> Changing has supported return type
+PASS MapBox.clearWorld shares a consistent state type across hooks
+PASS target MapBox.generateNewMap() exists uniquely
+PASS MapBox.generateNewMap -> Changing is a unique static hook
+PASS MapBox.generateNewMap -> Changing has supported return type
+PASS MapBox.generateNewMap shares a consistent state type across hooks
+PASS target SaveManager.loadData(SavedMap,System.String) exists uniquely
+PASS SaveManager.loadData -> Changing is a unique static hook
+PASS SaveManager.loadData -> Changing has supported return type
+PASS SaveManager.loadData shares a consistent state type across hooks
+PASS target MapBox.finishingUpLoading() exists uniquely
+PASS MapBox.finishingUpLoading -> Ready is a unique static hook
+PASS MapBox.finishingUpLoading -> Ready has supported return type
+PASS MapBox.finishingUpLoading shares a consistent state type across hooks
+PASS target SaveManager.currentWorldToSavedMap() exists uniquely
+PASS SaveManager.currentWorldToSavedMap -> BeforeSave is a unique static hook
+PASS SaveManager.currentWorldToSavedMap -> BeforeSave has supported return type
+PASS SaveManager.currentWorldToSavedMap shares a consistent state type across hooks
+PASS target MapBox.isOverUI() exists uniquely
+PASS MapBox.isOverUI -> OverlayPointerAfter is a unique static hook
+PASS MapBox.isOverUI -> OverlayPointerAfter has supported return type
+PASS MapBox.isOverUI -> OverlayPointerAfter parameter __result: result type matches target return
+PASS MapBox.isOverUI shares a consistent state type across hooks
+PASS target WarManager.newWar(Kingdom,Kingdom,WarTypeAsset) exists uniquely
+PASS WarManager.newWar -> WarStartBefore is a unique static hook
+PASS WarManager.newWar -> WarStartBefore has supported return type
+PASS WarManager.newWar -> WarStartBefore parameter __instance: instance type matches nonstatic target
+PASS WarManager.newWar -> WarStartBefore parameter __state: state type matches and prefix uses by-reference output
+PASS WarManager.newWar -> WarStartAfter is a unique static hook
+PASS WarManager.newWar -> WarStartAfter has supported return type
+PASS WarManager.newWar -> WarStartAfter parameter __instance: instance type matches nonstatic target
+PASS WarManager.newWar -> WarStartAfter parameter __result: result type matches target return
+PASS WarManager.newWar -> WarStartAfter parameter __state: state type matches and prefix uses by-reference output
+PASS WarManager.newWar shares a consistent state type across hooks
+PASS WarManager.newWar consumers have a prefix state producer
+PASS target WarManager.endWar(War,WarWinner) exists uniquely
+PASS WarManager.endWar -> WarEndBefore is a unique static hook
+PASS WarManager.endWar -> WarEndBefore has supported return type
+PASS WarManager.endWar -> WarEndBefore parameter pWar: named parameter matches target name and type
+PASS WarManager.endWar -> WarEndBefore parameter __state: state type matches and prefix uses by-reference output
+PASS WarManager.endWar -> WarEndAfter is a unique static hook
+PASS WarManager.endWar -> WarEndAfter has supported return type
+PASS WarManager.endWar -> WarEndAfter parameter pWar: named parameter matches target name and type
+PASS WarManager.endWar -> WarEndAfter parameter __state: state type matches and prefix uses by-reference output
+PASS WarManager.endWar shares a consistent state type across hooks
+PASS WarManager.endWar consumers have a prefix state producer
+PASS target CityManager.newCity(Kingdom,TileZone,Actor) exists uniquely
+PASS CityManager.newCity -> CityNewBefore is a unique static hook
+PASS CityManager.newCity -> CityNewBefore has supported return type
+PASS CityManager.newCity -> CityNewBefore parameter __instance: instance type matches nonstatic target
+PASS CityManager.newCity -> CityNewBefore parameter __state: state type matches and prefix uses by-reference output
+PASS CityManager.newCity -> CityNewAfter is a unique static hook
+PASS CityManager.newCity -> CityNewAfter has supported return type
+PASS CityManager.newCity -> CityNewAfter parameter __instance: instance type matches nonstatic target
+PASS CityManager.newCity -> CityNewAfter parameter __result: result type matches target return
+PASS CityManager.newCity -> CityNewAfter parameter __state: state type matches and prefix uses by-reference output
+PASS CityManager.newCity shares a consistent state type across hooks
+PASS CityManager.newCity consumers have a prefix state producer
+PASS target City.newCityEvent(Actor) exists uniquely
+PASS City.newCityEvent -> CityNamedAfter is a unique static hook
+PASS City.newCityEvent -> CityNamedAfter has supported return type
+PASS City.newCityEvent -> CityNamedAfter parameter __instance: instance type matches nonstatic target
+PASS City.newCityEvent shares a consistent state type across hooks
+PASS target CityManager.removeObject(City) exists uniquely
+PASS CityManager.removeObject -> CityEndBefore is a unique static hook
+PASS CityManager.removeObject -> CityEndBefore has supported return type
+PASS CityManager.removeObject -> CityEndBefore parameter pObject: named parameter matches target name and type
+PASS CityManager.removeObject -> CityEndBefore parameter __state: state type matches and prefix uses by-reference output
+PASS CityManager.removeObject -> CityEndAfter is a unique static hook
+PASS CityManager.removeObject -> CityEndAfter has supported return type
+PASS CityManager.removeObject -> CityEndAfter parameter pObject: named parameter matches target name and type
+PASS CityManager.removeObject -> CityEndAfter parameter __state: state type matches and prefix uses by-reference output
+PASS CityManager.removeObject shares a consistent state type across hooks
+PASS CityManager.removeObject consumers have a prefix state producer
+PASS target City.joinAnotherKingdom(Kingdom,System.Boolean,System.Boolean) exists uniquely
+PASS City.joinAnotherKingdom -> CityTransferBefore is a unique static hook
+PASS City.joinAnotherKingdom -> CityTransferBefore has supported return type
+PASS City.joinAnotherKingdom -> CityTransferBefore parameter __instance: instance type matches nonstatic target
+PASS City.joinAnotherKingdom -> CityTransferBefore parameter pNewSetKingdom: named parameter matches target name and type
+PASS City.joinAnotherKingdom -> CityTransferBefore parameter pCaptured: named parameter matches target name and type
+PASS City.joinAnotherKingdom -> CityTransferBefore parameter pRebellion: named parameter matches target name and type
+PASS City.joinAnotherKingdom -> CityTransferBefore parameter __state: state type matches and prefix uses by-reference output
+PASS City.joinAnotherKingdom -> CityTransferAfter is a unique static hook
+PASS City.joinAnotherKingdom -> CityTransferAfter has supported return type
+PASS City.joinAnotherKingdom -> CityTransferAfter parameter __instance: instance type matches nonstatic target
+PASS City.joinAnotherKingdom -> CityTransferAfter parameter pNewSetKingdom: named parameter matches target name and type
+PASS City.joinAnotherKingdom -> CityTransferAfter parameter __state: state type matches and prefix uses by-reference output
+PASS City.joinAnotherKingdom shares a consistent state type across hooks
+PASS City.joinAnotherKingdom consumers have a prefix state producer
+PASS target Kingdom.newCivKingdom(Actor) exists uniquely
+PASS Kingdom.newCivKingdom -> KingdomNewBefore is a unique static hook
+PASS Kingdom.newCivKingdom -> KingdomNewBefore has supported return type
+PASS Kingdom.newCivKingdom -> KingdomNewBefore parameter __instance: instance type matches nonstatic target
+PASS Kingdom.newCivKingdom -> KingdomNewBefore parameter __state: state type matches and prefix uses by-reference output
+PASS Kingdom.newCivKingdom -> KingdomNewAfter is a unique static hook
+PASS Kingdom.newCivKingdom -> KingdomNewAfter has supported return type
+PASS Kingdom.newCivKingdom -> KingdomNewAfter parameter __instance: instance type matches nonstatic target
+PASS Kingdom.newCivKingdom -> KingdomNewAfter parameter __state: state type matches and prefix uses by-reference output
+PASS Kingdom.newCivKingdom shares a consistent state type across hooks
+PASS Kingdom.newCivKingdom consumers have a prefix state producer
+PASS target KingdomManager.removeObject(Kingdom) exists uniquely
+PASS KingdomManager.removeObject -> KingdomEndBefore is a unique static hook
+PASS KingdomManager.removeObject -> KingdomEndBefore has supported return type
+PASS KingdomManager.removeObject -> KingdomEndBefore parameter pKingdom: named parameter matches target name and type
+PASS KingdomManager.removeObject -> KingdomEndBefore parameter __state: state type matches and prefix uses by-reference output
+PASS KingdomManager.removeObject -> KingdomEndAfter is a unique static hook
+PASS KingdomManager.removeObject -> KingdomEndAfter has supported return type
+PASS KingdomManager.removeObject -> KingdomEndAfter parameter pKingdom: named parameter matches target name and type
+PASS KingdomManager.removeObject -> KingdomEndAfter parameter __state: state type matches and prefix uses by-reference output
+PASS KingdomManager.removeObject shares a consistent state type across hooks
+PASS KingdomManager.removeObject consumers have a prefix state producer
+PASS target Kingdom.setKing(Actor,System.Boolean) exists uniquely
+PASS Kingdom.setKing -> KingBefore is a unique static hook
+PASS Kingdom.setKing -> KingBefore has supported return type
+PASS Kingdom.setKing -> KingBefore parameter __instance: instance type matches nonstatic target
+PASS Kingdom.setKing -> KingBefore parameter pFromLoad: named parameter matches target name and type
+PASS Kingdom.setKing -> KingBefore parameter __state: state type matches and prefix uses by-reference output
+PASS Kingdom.setKing -> KingAfter is a unique static hook
+PASS Kingdom.setKing -> KingAfter has supported return type
+PASS Kingdom.setKing -> KingAfter parameter __instance: instance type matches nonstatic target
+PASS Kingdom.setKing -> KingAfter parameter pActor: named parameter matches target name and type
+PASS Kingdom.setKing -> KingAfter parameter __state: state type matches and prefix uses by-reference output
+PASS Kingdom.setKing shares a consistent state type across hooks
+PASS Kingdom.setKing consumers have a prefix state producer
+PASS target Kingdom.removeKing() exists uniquely
+PASS Kingdom.removeKing -> KingRemoveBefore is a unique static hook
+PASS Kingdom.removeKing -> KingRemoveBefore has supported return type
+PASS Kingdom.removeKing -> KingRemoveBefore parameter __instance: instance type matches nonstatic target
+PASS Kingdom.removeKing -> KingRemoveBefore parameter __state: state type matches and prefix uses by-reference output
+PASS Kingdom.removeKing -> KingRemoveAfter is a unique static hook
+PASS Kingdom.removeKing -> KingRemoveAfter has supported return type
+PASS Kingdom.removeKing -> KingRemoveAfter parameter __instance: instance type matches nonstatic target
+PASS Kingdom.removeKing -> KingRemoveAfter parameter __state: state type matches and prefix uses by-reference output
+PASS Kingdom.removeKing shares a consistent state type across hooks
+PASS Kingdom.removeKing consumers have a prefix state producer
+PASS target AllianceManager.newAlliance(Kingdom,Kingdom) exists uniquely
+PASS AllianceManager.newAlliance -> AllianceNewBefore is a unique static hook
+PASS AllianceManager.newAlliance -> AllianceNewBefore has supported return type
+PASS AllianceManager.newAlliance -> AllianceNewBefore parameter __instance: instance type matches nonstatic target
+PASS AllianceManager.newAlliance -> AllianceNewBefore parameter __state: state type matches and prefix uses by-reference output
+PASS AllianceManager.newAlliance -> AllianceNewAfter is a unique static hook
+PASS AllianceManager.newAlliance -> AllianceNewAfter has supported return type
+PASS AllianceManager.newAlliance -> AllianceNewAfter parameter __instance: instance type matches nonstatic target
+PASS AllianceManager.newAlliance -> AllianceNewAfter parameter __result: result type matches target return
+PASS AllianceManager.newAlliance -> AllianceNewAfter parameter pKingdom: named parameter matches target name and type
+PASS AllianceManager.newAlliance -> AllianceNewAfter parameter pKingdom2: named parameter matches target name and type
+PASS AllianceManager.newAlliance -> AllianceNewAfter parameter __state: state type matches and prefix uses by-reference output
+PASS AllianceManager.newAlliance -> AllianceNewFinally is a unique static hook
+PASS AllianceManager.newAlliance -> AllianceNewFinally has supported return type
+PASS AllianceManager.newAlliance -> AllianceNewFinally parameter __exception: exception injection is valid for finalizer
+PASS AllianceManager.newAlliance -> AllianceNewFinally parameter __state: state type matches and prefix uses by-reference output
+PASS AllianceManager.newAlliance shares a consistent state type across hooks
+PASS AllianceManager.newAlliance consumers have a prefix state producer
+PASS target AllianceManager.dissolveAlliance(Alliance) exists uniquely
+PASS AllianceManager.dissolveAlliance -> AllianceEndBefore is a unique static hook
+PASS AllianceManager.dissolveAlliance -> AllianceEndBefore has supported return type
+PASS AllianceManager.dissolveAlliance -> AllianceEndBefore parameter pAlliance: named parameter matches target name and type
+PASS AllianceManager.dissolveAlliance -> AllianceEndBefore parameter __state: state type matches and prefix uses by-reference output
+PASS AllianceManager.dissolveAlliance -> AllianceEndAfter is a unique static hook
+PASS AllianceManager.dissolveAlliance -> AllianceEndAfter has supported return type
+PASS AllianceManager.dissolveAlliance -> AllianceEndAfter parameter pAlliance: named parameter matches target name and type
+PASS AllianceManager.dissolveAlliance -> AllianceEndAfter parameter __state: state type matches and prefix uses by-reference output
+PASS AllianceManager.dissolveAlliance shares a consistent state type across hooks
+PASS AllianceManager.dissolveAlliance consumers have a prefix state producer
+PASS target Alliance.join(Kingdom,System.Boolean,System.Boolean) exists uniquely
+PASS Alliance.join -> AllianceJoinBefore is a unique static hook
+PASS Alliance.join -> AllianceJoinBefore has supported return type
+PASS Alliance.join -> AllianceJoinBefore parameter __instance: instance type matches nonstatic target
+PASS Alliance.join -> AllianceJoinBefore parameter pKingdom: named parameter matches target name and type
+PASS Alliance.join -> AllianceJoinBefore parameter __state: state type matches and prefix uses by-reference output
+PASS Alliance.join -> AllianceJoinAfter is a unique static hook
+PASS Alliance.join -> AllianceJoinAfter has supported return type
+PASS Alliance.join -> AllianceJoinAfter parameter __instance: instance type matches nonstatic target
+PASS Alliance.join -> AllianceJoinAfter parameter pKingdom: named parameter matches target name and type
+PASS Alliance.join -> AllianceJoinAfter parameter __result: result type matches target return
+PASS Alliance.join -> AllianceJoinAfter parameter __state: state type matches and prefix uses by-reference output
+PASS Alliance.join shares a consistent state type across hooks
+PASS Alliance.join consumers have a prefix state producer
+PASS target Alliance.leave(Kingdom,System.Boolean) exists uniquely
+PASS Alliance.leave -> AllianceLeaveBefore is a unique static hook
+PASS Alliance.leave -> AllianceLeaveBefore has supported return type
+PASS Alliance.leave -> AllianceLeaveBefore parameter __instance: instance type matches nonstatic target
+PASS Alliance.leave -> AllianceLeaveBefore parameter pKingdom: named parameter matches target name and type
+PASS Alliance.leave -> AllianceLeaveBefore parameter __state: state type matches and prefix uses by-reference output
+PASS Alliance.leave -> AllianceLeaveAfter is a unique static hook
+PASS Alliance.leave -> AllianceLeaveAfter has supported return type
+PASS Alliance.leave -> AllianceLeaveAfter parameter __instance: instance type matches nonstatic target
+PASS Alliance.leave -> AllianceLeaveAfter parameter pKingdom: named parameter matches target name and type
+PASS Alliance.leave -> AllianceLeaveAfter parameter __state: state type matches and prefix uses by-reference output
+PASS Alliance.leave shares a consistent state type across hooks
+PASS Alliance.leave consumers have a prefix state producer
+PASS target NanoObject.setName(System.String,System.Boolean) exists uniquely
+PASS NanoObject.setName -> NameBefore is a unique static hook
+PASS NanoObject.setName -> NameBefore has supported return type
+PASS NanoObject.setName -> NameBefore parameter __instance: instance type matches nonstatic target
+PASS NanoObject.setName -> NameBefore parameter __state: state type matches and prefix uses by-reference output
+PASS NanoObject.setName -> NameAfter is a unique static hook
+PASS NanoObject.setName -> NameAfter has supported return type
+PASS NanoObject.setName -> NameAfter parameter __instance: instance type matches nonstatic target
+PASS NanoObject.setName -> NameAfter parameter __state: state type matches and prefix uses by-reference output
+PASS NanoObject.setName shares a consistent state type across hooks
+PASS NanoObject.setName consumers have a prefix state producer
+PASS target Culture.createCulture(Actor,System.Boolean) exists uniquely
+PASS Culture.createCulture -> CultureCreationBefore is a unique static hook
+PASS Culture.createCulture -> CultureCreationBefore has supported return type
+PASS Culture.createCulture -> CultureCreationBefore parameter __state: state type matches and prefix uses by-reference output
+PASS Culture.createCulture -> CultureCreationFinally is a unique static hook
+PASS Culture.createCulture -> CultureCreationFinally has supported return type
+PASS Culture.createCulture -> CultureCreationFinally parameter __instance: instance type matches nonstatic target
+PASS Culture.createCulture -> CultureCreationFinally parameter __exception: exception injection is valid for finalizer
+PASS Culture.createCulture -> CultureCreationFinally parameter __state: state type matches and prefix uses by-reference output
+PASS Culture.createCulture shares a consistent state type across hooks
+PASS Culture.createCulture consumers have a prefix state producer
+PASS target Culture.recalcBaseStats() exists uniquely
+PASS Culture.recalcBaseStats -> CultureTraitsAfter is a unique static hook
+PASS Culture.recalcBaseStats -> CultureTraitsAfter has supported return type
+PASS Culture.recalcBaseStats -> CultureTraitsAfter parameter __instance: instance type matches nonstatic target
+PASS Culture.recalcBaseStats shares a consistent state type across hooks
+PASS target BookManager.newBook(Actor) exists uniquely
+PASS BookManager.newBook -> BookBefore is a unique static hook
+PASS BookManager.newBook -> BookBefore has supported return type
+PASS BookManager.newBook -> BookBefore parameter __instance: instance type matches nonstatic target
+PASS BookManager.newBook -> BookBefore parameter __state: state type matches and prefix uses by-reference output
+PASS BookManager.newBook -> BookAfter is a unique static hook
+PASS BookManager.newBook -> BookAfter has supported return type
+PASS BookManager.newBook -> BookAfter parameter __instance: instance type matches nonstatic target
+PASS BookManager.newBook -> BookAfter parameter __result: result type matches target return
+PASS BookManager.newBook -> BookAfter parameter pActor: named parameter matches target name and type
+PASS BookManager.newBook -> BookAfter parameter __state: state type matches and prefix uses by-reference output
+PASS BookManager.newBook shares a consistent state type across hooks
+PASS BookManager.newBook consumers have a prefix state producer
+PASS GameReader and DiscoveryReader are present in compiled mod
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: CultureManager MapBox::cultures
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: CultureManager MapBox::cultures
+PASS Reader game member exists: System.Collections.Generic.IEnumerator`1<!0> CoreSystemManager`2<Culture,CultureData>::GetEnumerator()
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: BookManager MapBox::books
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: BookManager MapBox::books
+PASS Reader game member exists: System.Collections.Generic.IEnumerator`1<!0> CoreSystemManager`2<Book,BookData>::GetEnumerator()
+PASS Reader game member exists: !0 CoreSystemObject`1<BookData>::data
+PASS Reader game member exists: !0 CoreSystemObject`1<BookData>::data
+PASS Reader game member exists: System.Int64 BaseSystemData::get_id()
+PASS Reader game member exists: !0 CoreSystemObject`1<BookData>::data
+PASS Reader game member exists: !0 CoreSystemObject`1<BookData>::data
+PASS Reader game member exists: System.Int64 BaseSystemData::get_id()
+PASS Reader game member exists: !0 CoreSystemObject`1<CultureData>::data
+PASS Reader game member exists: System.Collections.Generic.IReadOnlyCollection`1<!1> MetaObjectWithTraits`2<CultureData,CultureTrait>::getTraits()
+PASS Reader game member exists: System.String Asset::id
+PASS Reader game member exists: System.String Asset::id
+PASS Reader game member exists: !0 CoreSystemObject`1<CultureData>::data
+PASS Reader game member exists: System.Int64 BaseSystemData::get_id()
+PASS Reader game member exists: !0 CoreSystemObject`1<CultureData>::data
+PASS Reader game member exists: System.Boolean NanoObject::isAlive()
+PASS Reader game member exists: !0 CoreSystemObject`1<CultureData>::data
+PASS Reader game member exists: System.Int64 BaseSystemData::get_id()
+PASS Reader game member exists: System.Collections.Generic.IReadOnlyCollection`1<!1> MetaObjectWithTraits`2<CultureData,CultureTrait>::getTraits()
+PASS Reader game member exists: System.String Asset::id
+PASS Reader game member exists: System.String Asset::id
+PASS Reader game member exists: System.String BaseUnlockableAsset::getLocaleID()
+PASS Reader game member exists: System.Boolean LocalizedTextManager::stringExists(System.String)
+PASS Reader game member exists: System.String LocalizedTextManager::getText(System.String,UnityEngine.UI.Text,System.Boolean)
+PASS Reader game member exists: System.String Asset::id
+PASS Reader game member exists: !0 CoreSystemObject`1<CityData>::data
+PASS Reader game member exists: !0 CoreSystemObject`1<KingdomData>::data
+PASS Reader game member exists: ActorData Actor::data
+PASS Reader game member exists: !0 CoreSystemObject`1<AllianceData>::data
+PASS Reader game member exists: !0 CoreSystemObject`1<CultureData>::data
+PASS Reader game member exists: !0 CoreSystemObject`1<BookData>::data
+PASS Reader game member exists: Actor Kingdom::king
+PASS Reader game member exists: Actor Kingdom::king
+PASS Reader game member exists: ActorData Actor::data
+PASS Reader game member exists: Actor Kingdom::king
+PASS Reader game member exists: System.Boolean NanoObject::isAlive()
+PASS Reader game member exists: Actor Kingdom::king
+PASS Reader game member exists: ActorData Actor::data
+PASS Reader game member exists: Actor Kingdom::king
+PASS Reader game member exists: System.String NanoObject::get_name()
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: MapStats MapBox::map_stats
+PASS Reader game member exists: System.Int32 MapStats::get_year()
+PASS Reader game member exists: System.Double MapStats::world_time
+PASS Reader game member exists: System.String MapStats::name
+PASS Reader game member exists: System.String MapStats::name
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: System.Boolean Config::get_worldLoading()
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: KingdomManager MapBox::kingdoms
+PASS Reader game member exists: KingdomManager MapBox::kingdoms
+PASS Reader game member exists: System.Int32 BaseSystemManager::get_Count()
+PASS Reader game member exists: CityManager MapBox::cities
+PASS Reader game member exists: CityManager MapBox::cities
+PASS Reader game member exists: System.Int32 BaseSystemManager::get_Count()
+PASS Reader game member exists: WarManager MapBox::wars
+PASS Reader game member exists: WarManager MapBox::wars
+PASS Reader game member exists: System.Int64 WarManager::countActiveWars()
+PASS Reader game member exists: KingdomManager MapBox::kingdoms
+PASS Reader game member exists: KingdomManager MapBox::kingdoms
+PASS Reader game member exists: System.Collections.Generic.IEnumerator`1<!0> CoreSystemManager`2<Kingdom,KingdomData>::GetEnumerator()
+PASS Reader game member exists: System.Boolean NanoObject::isAlive()
+PASS Reader game member exists: System.Boolean Kingdom::wild
+PASS Reader game member exists: !0 CoreSystemObject`1<KingdomData>::data
+PASS Reader game member exists: System.String NanoObject::get_name()
+PASS Reader game member exists: !0 CoreSystemObject`1<KingdomData>::data
+PASS Reader game member exists: System.Int64 BaseSystemData::get_id()
+PASS Reader game member exists: Actor Kingdom::king
+PASS Reader game member exists: Actor Kingdom::king
+PASS Reader game member exists: ActorData Actor::data
+PASS Reader game member exists: Actor Kingdom::king
+PASS Reader game member exists: System.String NanoObject::get_name()
+PASS Reader game member exists: System.String BaseSystemData::get_name()
+PASS Reader game member exists: System.String BaseSystemData::get_name()
+PASS Reader game member exists: System.String BaseSystemData::get_name()
+PASS Reader game member exists: System.Int64 BaseSystemData::get_id()
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: KingdomManager MapBox::kingdoms
+PASS Reader game member exists: MapBox World::get_world()
+PASS Reader game member exists: KingdomManager MapBox::kingdoms
+PASS Reader game member exists: System.Collections.Generic.IEnumerator`1<!0> CoreSystemManager`2<Kingdom,KingdomData>::GetEnumerator()
+PASS Reader game member exists: !0 CoreSystemObject`1<KingdomData>::data
+PASS Reader game member exists: System.Boolean NanoObject::isAlive()
+PASS Reader game member exists: System.Boolean Kingdom::wild
+PASS Reader game member exists: System.Boolean Kingdom::isCiv()
+PASS Reader game member exists: !0 CoreSystemObject`1<KingdomData>::data
+PASS Reader game member exists: System.String NanoObject::get_name()
+PASS Reader game member exists: System.Int32 Kingdom::countZones()
+PASS Reader game member exists: System.Int32 MetaObject`1<KingdomData>::getPopulationPeople()
+PASS Reader game member exists: System.Int32 Kingdom::countTotalWarriors()
+RESULT 334 checks passed, 0 failed; 24 target registrations; 41 hook methods checked; 99 direct game-member references checked.
+SHA256 4d5216105eceaccbbd2aa4a8e87272e4fe1c57f3d39fa4634d16fc2309cc1859 /workspace/work/WorldChronicle/Code/Integration/GameHooks.cs
+SHA256 8c54a0b93a3b929834fb426fce8ce66344444e7709484956ddf04267de718234 /workspace/work/references/nml/assembly-dependencies/Assembly-CSharp-Publicized.dll
+SHA256 8acced52f97865c6db6dd14e824d97640aeb7c4a93866f7abf3690b63e8be6e3 /workspace/work/build/bin/Release/net48/WorldChronicle.dll
+SHA256 94dd48eac2d58eeadd7b7bf8e7c0be09c3486acb51be1efc2e0d4c8131ac4500 /workspace/work/WorldChronicle/Code/Integration/GameReader.cs
+SHA256 a669a4c269ed8e81790bcefee013ee3b40d3425e856152889e5ded7bc22ed69d /workspace/work/WorldChronicle/Code/Integration/DiscoveryReader.cs
+Scope: Mono.Cecil metadata only, against the NML-distributed publicized WorldBox assembly and compiled net48 mod. Unity was not loaded or executed.
+Limitations: this cannot establish runtime Harmony patch success, IL rewriting/ordering with other mods, event timing/semantics, UI interaction, save serialization inside WorldBox, or compatibility with the user's exact installed build.
