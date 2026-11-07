@@ -39,6 +39,16 @@ namespace WorldChronicle
         public int MetricsStartedYear = -1;
         public List<AnnualObservation> Observations = new List<AnnualObservation>();
         public List<CenturyPage> Pages = new List<CenturyPage>();
+        public List<RealmIllustration> Illustrations = new List<RealmIllustration>();
+    }
+
+    public sealed class RealmIllustration
+    {
+        public int CenturyIndex;
+        public int Year;
+        public string NationId;
+        public string NationName;
+        public string PngBase64;
     }
 
     public sealed class NationSnapshot

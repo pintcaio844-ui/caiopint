@@ -2,7 +2,7 @@
 
 Um mod para **WorldBox 0.51.2 no Windows/Steam**, com **NeoModLoader**, que transforma os acontecimentos de cada partida em um livro histórico em português.
 
-**Protótipo 0.2.0, preparado para o primeiro teste dentro do jogo.** O código foi compilado e testado fora do WorldBox. A execução no jogo e a convivência com outros mods ainda precisam de validação.
+**Protótipo 0.3.0, preparado para o primeiro teste dentro do jogo.** O código foi compilado e testado fora do WorldBox. A execução no jogo e a convivência com outros mods ainda precisam de validação.
 
 ## Um século por página
 
@@ -64,3 +64,11 @@ Veja [o exemplo fictício do livro exportado](docs/livro-exemplo.html) baixando 
 O pacote inclui o código-fonte, os testes e [as instruções de compilação](Desenvolvimento/LEIA-ME.md). Os arquivos e bibliotecas proprietários do jogo não são redistribuídos.
 
 Base técnica: [NeoModLoader](https://github.com/WorldBoxOpenMods/ModLoader) e [changelog oficial do WorldBox](https://www.superworldbox.com/changelog).
+
+## Atualização 0.3.0 — livro ilustrado
+
+A janela ganhou textura de pergaminho, capa de couro, filetes dourados e títulos em tinta escura. O livro captura pequenas composições dos símbolos e cores nativos dos três reinos de maior território em cada observação anual. As imagens permanecem associadas ao século e acompanham o save, mesmo se o reino desaparecer. Também aparecem no HTML exportado. São brasões; esta versão não fotografa o mapa nem cenas de batalha. A captura de imagem dentro do Unity ainda precisa de teste nesta atualização; se não estiver disponível, o registro textual continua.
+
+Novas guerras podem ser contextualizadas com alianças rompidas, cidades anteriormente conquistadas ou guerras anteriores entre os mesmos reinos. A ordem dos fatos é preservada; essas relações não são tratadas automaticamente como o motivo da invasão.
+
+Para atualizar, feche o jogo, substitua a pasta WorldChronicle pela nova versão e reabra. Os saves existentes continuam compatíveis. Deixe o calendário avançar um ano para iniciar os registros ilustrados; imagens de séculos anteriores à atualização não são reconstruídas.

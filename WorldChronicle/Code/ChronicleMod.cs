@@ -15,6 +15,8 @@ namespace WorldChronicle
         private string _lastExport, _bookBranch;
         private GUIStyle _cover, _paper, _body, _heading, _small, _coverText;
         private Texture2D _paperTexture, _coverTexture;
+        private Font _bookFont;
+        private readonly System.Collections.Generic.Dictionary<string, Texture2D> _art = new System.Collections.Generic.Dictionary<string, Texture2D>();
 
         internal static bool OverlayBlocksPointer
         {
@@ -30,7 +32,7 @@ namespace WorldChronicle
         {
             _harmony = new Harmony("worldchronicle.cronistadomundo.v1");
             GameHooks.Install(_harmony, message => Debug.Log("[WorldChronicle] " + message));
-            Debug.Log("[WorldChronicle] Livro do Mundo 0.2.0. Ctrl+Shift+H abre o livro; uma página por século.");
+            Debug.Log("[WorldChronicle] Livro do Mundo 0.3.0. Ctrl+Shift+H abre o livro; uma página por século.");
         }
 
         private void Update()
@@ -118,6 +120,7 @@ namespace WorldChronicle
                     GUILayout.Label(page.Title, _heading);
                     GUILayout.Label(page.IsComplete ? "Capítulo concluído" : "Em escrita · observado até o ano " + page.ObservedThroughYear, _small);
                     GUILayout.Space(14);
+                    DrawIllustrations(journal, page);
                     GUILayout.Label(page.Summary, _body);
                     GUILayout.Space(14);
                     if (!String.IsNullOrEmpty(page.DominantNationName))
@@ -159,8 +162,8 @@ namespace WorldChronicle
         private void EnsureStyles()
         {
             if (_cover != null) return;
-            _paperTexture = Solid(new Color(0.94f, 0.88f, 0.73f));
-            _coverTexture = Solid(new Color(0.19f, 0.13f, 0.10f));
+            _paperTexture = Manuscript(false);
+            _coverTexture = Manuscript(true);
             _cover = new GUIStyle(GUI.skin.window) { padding = new RectOffset(22, 22, 30, 16), richText = false };
             _cover.normal.background = _coverTexture;
             _cover.onNormal.background = _coverTexture;
@@ -168,8 +171,15 @@ namespace WorldChronicle
             _paper = new GUIStyle(GUI.skin.box) { padding = new RectOffset(28, 28, 24, 18) };
             _paper.normal.background = _paperTexture;
             _body = new GUIStyle(GUI.skin.label) { fontSize = 16, wordWrap = true, richText = false, padding = new RectOffset(0, 8, 3, 10) };
+            try
+            {
+                _bookFont = Font.CreateDynamicFontFromOSFont(new[] { "Georgia", "Palatino Linotype", "Times New Roman", "Liberation Serif" }, 18);
+                if (_bookFont != null) _body.font = _bookFont;
+            }
+            catch (Exception) { /* Keep the game's font if no serif font is available. */ }
             _body.normal.textColor = new Color(0.19f, 0.14f, 0.10f);
-            _heading = new GUIStyle(_body) { fontSize = 23, fontStyle = FontStyle.Bold };
+            _heading = new GUIStyle(_body) { fontSize = 25, fontStyle = FontStyle.Bold };
+            _heading.normal.textColor = new Color(0.38f, 0.12f, 0.08f);
             _small = new GUIStyle(_body) { fontSize = 12 };
             _small.normal.textColor = new Color(0.39f, 0.30f, 0.20f);
             _coverText = new GUIStyle(GUI.skin.label) { fontSize = 12, wordWrap = true, richText = false };
@@ -184,6 +194,62 @@ namespace WorldChronicle
             return texture;
         }
 
+        private void DrawIllustrations(ChronicleJournal journal, CenturyPage page)
+        {
+            var images = BookIllustrations.ForPage(journal, page);
+            if (images.Count == 0) return;
+            if (_art.Count > 6) ClearArt();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            foreach (var image in images)
+            {
+                Texture2D texture;
+                if (!_art.TryGetValue(image.PngBase64, out texture))
+                {
+                    texture = new Texture2D(2, 2);
+                    if (!texture.LoadImage(Convert.FromBase64String(image.PngBase64))) { Destroy(texture); continue; }
+                    texture.filterMode = FilterMode.Point;
+                    _art.Add(image.PngBase64, texture);
+                }
+                GUILayout.BeginVertical(GUILayout.Width(130));
+                GUILayout.Label(texture, GUILayout.Width(96), GUILayout.Height(96));
+                GUILayout.Label(image.NationName, _small);
+                GUILayout.Label("Ano " + image.Year, _small);
+                GUILayout.EndVertical();
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.Space(12);
+        }
+
+        private static Texture2D Manuscript(bool leather)
+        {
+            const int size = 256;
+            var texture = new Texture2D(size, size);
+            var pixels = new Color[size * size];
+            var random = new System.Random(leather ? 47 : 19);
+            for (int y = 0; y < size; y++) for (int x = 0; x < size; x++)
+            {
+                int edge = Math.Min(Math.Min(x, size - 1 - x), Math.Min(y, size - 1 - y));
+                float grain = (float)random.NextDouble() * (leather ? 0.025f : 0.035f);
+                float wear = Math.Max(0, 1f - edge / 24f) * (leather ? 0.07f : 0.15f);
+                var color = leather ? new Color(0.20f + grain - wear, 0.115f + grain - wear * 0.5f, 0.065f + grain)
+                    : new Color(0.94f - grain - wear, 0.875f - grain - wear, 0.715f - grain - wear * 0.8f);
+                if (edge == 6 || edge == 9) color = leather ? new Color(0.57f, 0.40f, 0.16f) : new Color(0.64f, 0.45f, 0.25f);
+                if (!leather && x < 18) color *= 0.82f + x / 100f;
+                color.a = 1;
+                pixels[y * size + x] = color;
+            }
+            texture.SetPixels(pixels); texture.Apply();
+            return texture;
+        }
+
+        private void ClearArt()
+        {
+            foreach (var texture in _art.Values) if (texture != null) Destroy(texture);
+            _art.Clear();
+        }
+
         private static string Roman(int value)
         {
             if (value <= 0 || value > 3999) return value.ToString();
@@ -196,6 +262,8 @@ namespace WorldChronicle
 
         private void OnDestroy()
         {
+            ClearArt();
+            if (_bookFont != null) Destroy(_bookFont);
             if (_harmony != null) _harmony.UnpatchSelf();
             if (_paperTexture != null) Destroy(_paperTexture);
             if (_coverTexture != null) Destroy(_coverTexture);

@@ -314,6 +314,30 @@ Test("edited realm names are preserved verbatim in facts and escaped in exports"
     Assert(md.Contains("\\[Nova República\\]") && md.Contains("世界"), "Edited name was not rendered literally in Markdown");
 });
 
+var samplePng = Convert.ToBase64String(File.ReadAllBytes(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../..", "WorldChronicle", "icon.png"))));
+Test("historical illustrations survive save restoration", () => {
+    var j = Journal(); j.Illustrations.Add(new RealmIllustration {CenturyIndex=1,Year=25,NationId="a",NationName="Reino Ilustrado",PngBase64=samplePng});
+    var restored=JournalStore.Decode(JournalStore.Encode(j));
+    Assert(restored.Illustrations[0].PngBase64==samplePng,"Image lost on load");
+});
+Test("illustrations stay in the century where captured", () => {
+    var j=Journal();j.Illustrations.Add(new RealmIllustration {CenturyIndex=1,Year=25,NationId="a",NationName="Antigo",PngBase64=samplePng});Refresh(j,150);
+    Assert(BookIllustrations.ForPage(j,j.Pages[0]).Count==1 && BookIllustrations.ForPage(j,j.Pages[1]).Count==0,"Future page inherited old illustration");
+});
+Test("unsafe image content is rejected", () => {
+    Assert(!BookIllustrations.IsPng("\" onerror=alert(1)") && !BookIllustrations.IsPng(Convert.ToBase64String(Encoding.UTF8.GetBytes("<svg/>"))),"Non-PNG accepted");
+});
+Test("illustration captions escape edited realm names", () => {
+    var j=Journal();j.Illustrations.Add(new RealmIllustration {CenturyIndex=1,Year=25,NationId="a",NationName="<script>bad</script>",PngBase64=samplePng});Refresh(j,50);
+    string html=CenturyBook.Html(j);Assert(html.Contains("data:image/png;base64,") && !html.Contains("<script>bad</script>"),"Unsafe caption");
+});
+Test("war context uses only preceding recorded alliance breakup", () => {
+    var j=Journal();
+    TypedEvent(j,"alliance_formed",5,"Pacto Antigo","p","AllianceData","Arven","a","KingdomData","Dolmar","b","KingdomData");
+    TypedEvent(j,"alliance_left",20,"Arven","a","KingdomData","Pacto Antigo","p","AllianceData");
+    TypedEvent(j,"war_started",25,"Guerra Nova","w","WarData","Arven","a","KingdomData","Dolmar","b","KingdomData");Refresh(j,50);
+    Assert(j.Pages[0].Summary.Contains("Pacto Antigo") && j.Pages[0].Summary.Contains("rompimento"),"Recorded context missing");
+});
 var example = Journal(); example.WorldName = "EXEMPLO FICTÍCIO — Três séculos de Arven e Dolmar";
 AddEvent(example, "observation_started", 0, example.WorldName);
 TypedEvent(example, "kingdom_founded", 0, "Coroa de Arven", "arven", "KingdomData");

@@ -44,10 +44,15 @@ PASS culture trait observation does not invent an inventor or author
 PASS book writing credits the recorded author when author role is confirmed
 PASS unconfirmed book actor cannot be promoted to author
 PASS edited realm names are preserved verbatim in facts and escaped in exports
-RESULT 46/46 passed
-SHA256 5618619df4a91ef56d905f3e239890cc48ab3f260df93f222c66fd302f037f20 /workspace/work/WorldChronicle/Code/Core/CenturyBook.cs
-SHA256 db864a4b07df84e677402f01501ac7d23ac424bc690d3ab65527e815661394a2 /workspace/work/WorldChronicle/Code/Core/Narrative.cs
-SHA256 0ce458e8b5aab0249d15555dd84cd4126cb079ed4b2fee3dbe6e14ccaf837eb9 /workspace/work/WorldChronicle/Code/Core/Models.cs
-SHA256 ac9cc1ab1eb8aece124a87d475a24c89aa3b683509f3125f8648bd9f60bc64fe /workspace/work/WorldChronicle/Code/Core/JournalStore.cs
+PASS historical illustrations survive save restoration
+PASS illustrations stay in the century where captured
+PASS unsafe image content is rejected
+PASS illustration captions escape edited realm names
+PASS war context uses only preceding recorded alliance breakup
+RESULT 51/51 passed
+SHA256 3d0f8c218873d60a7c316bfc589bf81bd3224870afd7149ee859a84732743f24 /workspace/work/repository/WorldChronicle/Code/Core/CenturyBook.cs
+SHA256 db864a4b07df84e677402f01501ac7d23ac424bc690d3ab65527e815661394a2 /workspace/work/repository/WorldChronicle/Code/Core/Narrative.cs
+SHA256 c501b05202e85a56dc7947d6c2784e43c844c25f9cbb0370509ba2e399c41d3b /workspace/work/repository/WorldChronicle/Code/Core/Models.cs
+SHA256 62c5eed80ca4a0a3bef1f0e1f66207333296eee36aaefcaf957a5a01f389cf00 /workspace/work/repository/WorldChronicle/Code/Core/JournalStore.cs
 Scope: .NET8 unit/behavior tests of century aggregation, save checkpoints and book rendering. Example data is entirely fictional.
 Limitations: no WorldBox/Unity execution, no empirical timing validation of yearly sampling, and no proof of coexistence with subscribed mods. Manual time reversal is handled by the runtime; tested rollback uses an old saved checkpoint.

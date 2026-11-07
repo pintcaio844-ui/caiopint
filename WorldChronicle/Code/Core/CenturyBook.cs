@@ -297,6 +297,11 @@ namespace WorldChronicle
                     var origin = (journal.Events ?? new List<ChronicleEvent>()).FirstOrDefault(x => x != null && Direct(x)
                         && x.Kind == "war_started" && Has(notable.SubjectId) && x.SubjectId == notable.SubjectId
                         && x.Sequence <= notable.Sequence);
+                    if (origin != null)
+                    {
+                        string context = PriorConflictContext(journal, origin);
+                        if (Has(context)) parts.Add(context);
+                    }
                     if (origin != null && origin.Year < events.Min(x => x.Year)) parts.Add(Dated(origin));
                     parts.Add(Dated(notable));
                     var ending = ended.FirstOrDefault(x => Has(notable.SubjectId) && x.SubjectId == notable.SubjectId
@@ -321,6 +326,34 @@ namespace WorldChronicle
                 parts.Add("A destruição de " + Quantity(destroyed.Count, "cidade", "cidades")
                     + Examples(destroyed.Select(x => x.SubjectName)) + " também marcou os registros.");
             return string.Join(" ", parts.ToArray());
+        }
+
+        private static string PriorConflictContext(ChronicleJournal journal, ChronicleEvent war)
+        {
+            if (!Has(war.OtherId) || !Has(war.ContextId) || war.OtherId == war.ContextId) return String.Empty;
+            var past = journal.Events.Where(x => x != null && Direct(x) && x.Sequence < war.Sequence && x.Year <= war.Year).ToList();
+            if (!KingdomType(war.OtherType) || !KingdomType(war.ContextType)) return String.Empty;
+            past = past.Where(x => x.Kind == "alliance_left" ? KingdomType(x.SubjectType)
+                : x.Kind == "alliance_ended" || (KingdomType(x.OtherType) && KingdomType(x.ContextType))).ToList();
+            var alliance = past.LastOrDefault(x => x.Kind == "alliance_formed"
+                && ((x.OtherId == war.OtherId && x.ContextId == war.ContextId) || (x.OtherId == war.ContextId && x.ContextId == war.OtherId)));
+            if (alliance != null)
+            {
+                var breakup = past.LastOrDefault(x => (x.Kind == "alliance_ended" && x.SubjectId == alliance.SubjectId)
+                    || (x.Kind == "alliance_left" && x.OtherId == alliance.SubjectId && (x.SubjectId == war.OtherId || x.SubjectId == war.ContextId)));
+                if (breakup != null && breakup.Sequence > alliance.Sequence)
+                    return "Antes desse conflito, " + war.OtherName + " e " + war.ContextName + " haviam integrado a aliança "
+                        + alliance.SubjectName + ", formada no ano " + N(alliance.Year) + ". O rompimento foi registrado no ano " + N(breakup.Year) + ".";
+            }
+            var loss = past.LastOrDefault(x => x.Kind == "city_captured" && Has(x.SubjectName)
+                && ((x.OtherId == war.OtherId && x.ContextId == war.ContextId) || (x.OtherId == war.ContextId && x.ContextId == war.OtherId)));
+            if (loss != null)
+                return "A história entre os dois reinos já incluía a conquista de " + loss.SubjectName + " por " + loss.OtherName
+                    + ", até então sob o domínio de " + loss.ContextName + ", no ano " + N(loss.Year) + ".";
+            var previous = past.LastOrDefault(x => x.Kind == "war_ended" && Has(x.SubjectName)
+                && ((x.OtherId == war.OtherId && x.ContextId == war.ContextId) || (x.OtherId == war.ContextId && x.ContextId == war.OtherId)));
+            return previous == null ? String.Empty : "Os dois reinos já haviam participado da guerra " + previous.SubjectName
+                + ", encerrada no ano " + N(previous.Year) + ". O novo confronto retomou uma relação já marcada por conflitos.";
         }
 
         private static string DiscoverySummary(List<ChronicleEvent> events)
@@ -432,7 +465,7 @@ namespace WorldChronicle
             }
             text.Append("</ol></details>");
             if (pages.Count == 0) text.Append("<p class=\"empty\">O livro ainda não tem páginas. Carregue um mundo para iniciar a observação.</p>");
-            foreach (var page in pages) AppendPage(text, page);
+            foreach (var page in pages) AppendPage(text, page, journal);
             text.Append("<footer class=\"notes\">O primeiro século cobre os anos 0–99 e se encerra ao chegar ao ano 100. A dominância é um índice calculado sobre os anos observados, ")
                 .Append("com pesos de 50% para território, 30% para população e 20% para exército. Anos sem a nação contam como zero na média; anos sem observação não são inventados. ")
                 .Append("Páginas concluídas são preservadas no save. Nenhuma conexão de rede é necessária para ler este livro.</footer></main>")
@@ -447,7 +480,7 @@ namespace WorldChronicle
             return text.ToString();
         }
 
-        private static void AppendPage(StringBuilder text, CenturyPage page)
+        private static void AppendPage(StringBuilder text, CenturyPage page, ChronicleJournal journal)
         {
             text.Append("<section class=\"book-page\" id=\"century-").Append(N(page.CenturyIndex))
                 .Append("\" tabindex=\"-1\" aria-labelledby=\"title-").Append(N(page.CenturyIndex)).Append("\"><header class=\"chapter-head\"><div class=\"eyebrow\">Século ")
@@ -456,7 +489,19 @@ namespace WorldChronicle
                 .Append(page.IsComplete ? "" : " open").Append("\">").Append(page.IsComplete ? "Concluído" : "Em andamento").Append("</span><span class=\"badge\">")
                 .Append(N(page.ObservedYears)).Append(" de 100 anos observados</span>");
             if (page.PartialCoverage) text.Append("<span class=\"badge\">Cobertura parcial</span>");
-            text.Append("</div></header><div class=\"summary\">");
+            text.Append("</div></header>");
+            var illustrations = BookIllustrations.ForPage(journal, page);
+            if (illustrations.Count > 0)
+            {
+                text.Append("<div style=\"display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:22px 0;border-block:1px solid #baa174;padding:18px\">");
+                foreach (var illustration in illustrations)
+                    text.Append("<figure style=\"margin:0;text-align:center;max-width:160px\"><img width=\"96\" height=\"96\" alt=\"Brasão de ")
+                        .Append(H(illustration.NationName)).Append("\" src=\"data:image/png;base64,")
+                        .Append(illustration.PngBase64).Append("\"><figcaption>").Append(H(illustration.NationName))
+                        .Append("<small style=\"display:block\">Registrado no ano ").Append(N(illustration.Year)).Append("</small></figcaption></figure>");
+                text.Append("</div>");
+            }
+            text.Append("<div class=\"summary\">");
             foreach (var paragraph in SplitParagraphs(page.Summary)) text.Append("<p>").Append(H(paragraph)).Append("</p>");
             text.Append("</div><aside class=\"leader\"><div><span class=\"label\">")
                 .Append(Has(page.DominantNationName) && !Has(page.DominantNationId) ? "Liderança compartilhada" : "Nação dominante nos anos observados")

@@ -129,6 +129,7 @@ namespace WorldChronicle
                 {
                     AnnualObservation observation = GameReader.ObserveNations();
                     observations.Add(observation);
+                    RealmArt.Observe(_journal, observation);
                     if (_journal.MetricsStartedYear < 0) _journal.MetricsStartedYear = year;
                 }
             }

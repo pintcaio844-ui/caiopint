@@ -87,6 +87,10 @@ namespace WorldChronicle
                 throw new InvalidDataException("Sequência incompleta da crônica.");
             if (journal.Observations == null || journal.Pages == null)
                 throw new InvalidDataException("Dados do livro inválidos.");
+            if (journal.Illustrations == null) throw new InvalidDataException("Ilustrações inválidas.");
+            foreach (var art in journal.Illustrations)
+                if (art == null || String.IsNullOrEmpty(art.NationId) || art.Year < 0 || art.CenturyIndex != art.Year / 100 + 1 || !BookIllustrations.IsPng(art.PngBase64))
+                    throw new InvalidDataException("Ilustração histórica inválida.");
             int priorYear = -1;
             foreach (var observation in journal.Observations)
             {
