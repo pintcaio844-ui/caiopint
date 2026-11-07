@@ -16,6 +16,12 @@ A nação de maior projeção é calculada ao longo dos anos observados, com pes
 
 ## Instalar a primeira versão
 
+Antes de copiar o cronista, confirme que o **NeoModLoader está instalado e carregando**. Ativar o Modo experimental ou assinar mods na Oficina não confirma, por si só, que o carregador iniciou.
+
+Para instalar manualmente, feche o jogo, baixe [NeoModLoader.dll do projeto oficial](https://github.com/WorldBoxOpenMods/ModLoader/releases/download/latest/NeoModLoader.dll) e coloque o arquivo em `worldbox_Data/StreamingAssets/mods`, dentro da pasta do jogo. Crie essa pasta `mods` se necessário. Depois inicie o WorldBox com o Modo experimental ativo. Consulte também as [instruções oficiais](https://github.com/WorldBoxOpenMods/ModLoader#manual-installation).
+
+São dois locais distintos: o carregador fica em `worldbox_Data/StreamingAssets/mods/NeoModLoader.dll`; o cronista fica em `Mods/WorldChronicle/mod.json` ao lado do executável do jogo.
+
 1. Use **Code → Download ZIP** neste repositório e extraia o arquivo.
 2. Na Steam, abra **WorldBox → engrenagem → Gerenciar → Explorar arquivos locais**.
 3. Copie **somente a pasta `WorldChronicle`** para a pasta `Mods` do jogo.

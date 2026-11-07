@@ -4,6 +4,8 @@ Objetivo: verificar a primeira versão no jogo e junto aos mods da sua instalaç
 
 ## 1. Carregamento e livro
 
+Se o atalho não responder, primeiro confirme que NeoModLoader e Cronista do Mundo aparecem carregados. O Modo experimental ativo sozinho não carrega a pasta de código. A instalação manual do carregador está no [README](../README.md#instalar-a-primeira-versão).
+
 1. Copie a pasta `WorldChronicle` para `WorldBox\Mods` e abra o jogo.
 2. Confira **Cronista do Mundo 0.2.0** na lista de mods do NeoModLoader.
 3. Carregue o mundo e pressione **Ctrl + Shift + H**.
