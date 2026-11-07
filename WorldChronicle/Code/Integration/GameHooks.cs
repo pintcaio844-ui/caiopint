@@ -53,6 +53,9 @@ namespace WorldChronicle
             Patch(harmony, typeof(Culture), "createCulture", new[] { typeof(Actor), typeof(bool) }, "CultureCreationBefore", null, "CultureCreationFinally");
             Patch(harmony, typeof(Culture), "recalcBaseStats", Type.EmptyTypes, null, "CultureTraitsAfter");
             Patch(harmony, typeof(BookManager), "newBook", new[] { typeof(Actor) }, "BookBefore", "BookAfter");
+            Patch(harmony, typeof(WorldLogMessageExtensions), "add", new[] { typeof(WorldLogMessage) }, "NativeMessageBefore", null);
+            Patch(harmony, typeof(WorldLog), "logKingDead", new[] { typeof(Kingdom), typeof(Actor) }, "KingDeathBefore", null);
+            Patch(harmony, typeof(WorldLog), "logKingMurder", new[] { typeof(Kingdom), typeof(Actor), typeof(Actor) }, "KingMurderBefore", null);
         }
 
         private static void Patch(Harmony harmony, Type type, string name, Type[] parameters,
@@ -315,6 +318,8 @@ namespace WorldChronicle
                 if (__state == null || __instance.king == null || __instance.king != pActor || pActor.data == null || pActor.data.id == __state.PreviousId) return;
                 __state.Event.OtherId = GameReader.Id(pActor.data);
                 __state.Event.OtherName = pActor.name;
+                __state.Event.ParentIds = new[] { pActor.data.parent_id_1.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    pActor.data.parent_id_2.ToString(System.Globalization.CultureInfo.InvariantCulture) };
                 Emit(__state);
             });
         }
@@ -402,6 +407,40 @@ namespace WorldChronicle
         private static void AllianceLeaveAfter(Alliance __instance, Kingdom pKingdom, State __state)
         {
             Guard("saída de aliança", () => { if (__state != null && !__instance.hasKingdom(pKingdom)) Emit(__state); });
+        }
+
+        private static void NativeMessageBefore(WorldLogMessage pMessage)
+        {
+            Guard("histórico nativo", () =>
+            {
+                if (!CanObserve || pMessage == null) return;
+                string text;
+                try { text = pMessage.getFormatedText(null); }
+                catch (Exception) { text = String.Join(" · ", new[] { pMessage.special1, pMessage.special2, pMessage.special3 }); }
+                text = System.Text.RegularExpressions.Regex.Replace(text ?? String.Empty, @"</?(?:color|size|b|i)(?:=[^>]*)?>", String.Empty);
+                ChronicleRuntime.Record(new ChronicleEvent { Kind = "native_history", Evidence = "direct", NativeLogType = pMessage.asset_id,
+                    SubjectName = text, OtherId = pMessage.kingdom_id.ToString(System.Globalization.CultureInfo.InvariantCulture), OtherType = "KingdomData",
+                    ActorId = pMessage.unit_id.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    Detail = "source=WorldLogMessageExtensions.add;special1=" + pMessage.special1 + ";special2=" + pMessage.special2 + ";special3=" + pMessage.special3 });
+            });
+        }
+
+        private static void KingDeathBefore(Kingdom pKingdom, Actor pActor)
+        {
+            Guard("morte de governante", () =>
+            {
+                if (CanObserve && pKingdom != null && pActor != null)
+                    ChronicleRuntime.Record(GameReader.Event("ruler_died", pKingdom.data, pActor.data));
+            });
+        }
+
+        private static void KingMurderBefore(Kingdom pKingdom, Actor pActor, Actor pAttacker)
+        {
+            Guard("assassinato de governante", () =>
+            {
+                if (CanObserve && pKingdom != null && pActor != null)
+                    ChronicleRuntime.Record(GameReader.Event("ruler_murdered", pKingdom.data, pActor.data, pAttacker == null ? null : pAttacker.data));
+            });
         }
 
         private static void NameBefore(NanoObject __instance, out State __state)

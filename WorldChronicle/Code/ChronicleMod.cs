@@ -32,7 +32,7 @@ namespace WorldChronicle
         {
             _harmony = new Harmony("worldchronicle.cronistadomundo.v1");
             GameHooks.Install(_harmony, message => Debug.Log("[WorldChronicle] " + message));
-            Debug.Log("[WorldChronicle] Livro do Mundo 0.3.0. Ctrl+Shift+H abre o livro; uma página por século.");
+            Debug.Log("[WorldChronicle] Livro do Mundo 0.4.0. Ctrl+Shift+H abre o livro; uma página por século.");
         }
 
         private void Update()

@@ -191,6 +191,8 @@ namespace WorldChronicle
                 paragraphs.Add("Não foi possível determinar uma nação dominante neste trecho da história.");
 
             var arc = ExtinctionArc(journal, page, events);
+            string linkedHistory = HistoricalLinks.Describe(journal, page);
+            if (Has(linkedHistory)) paragraphs.Add(linkedHistory);
             if (Has(arc)) paragraphs.Add(arc);
             AddWithinLimit(paragraphs, ConflictSummary(journal, events, page.Rankings), 300);
             AddWithinLimit(paragraphs, PoliticalSummary(events), 300);
@@ -566,7 +568,8 @@ namespace WorldChronicle
                 || kind == "city_destroyed" || kind == "city_captured" || kind == "city_transferred"
                 || kind == "war_started" || kind == "war_ended" || kind == "alliance_formed"
                 || kind == "alliance_ended" || kind == "alliance_joined" || kind == "alliance_left"
-                || kind == "rebellion" || kind == "ruler_changed" || kind == "name_changed" || kind == "discovery";
+                || kind == "rebellion" || kind == "ruler_changed" || kind == "name_changed" || kind == "discovery"
+                || kind == "ruler_died" || kind == "ruler_murdered" || kind == "native_history";
         }
         private static string Quantity(int count, string singular, string plural)
         {

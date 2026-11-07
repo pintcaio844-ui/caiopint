@@ -338,6 +338,28 @@ Test("war context uses only preceding recorded alliance breakup", () => {
     TypedEvent(j,"war_started",25,"Guerra Nova","w","WarData","Arven","a","KingdomData","Dolmar","b","KingdomData");Refresh(j,50);
     Assert(j.Pages[0].Summary.Contains("Pacto Antigo") && j.Pages[0].Summary.Contains("rompimento"),"Recorded context missing");
 });
+Test("native sidebar messages retain their literal historical text", () => {
+    var e=new ChronicleEvent {Kind="native_history",SubjectName="O rei Aran morreu em Cedro.",Evidence="direct"};
+    Assert(Narrative.DescribeEvent(e)==e.SubjectName,"Native message was rewritten or lost");
+});
+Test("reign duration and verified child succession form linked history", () => {
+    var j=Journal();
+    TypedEvent(j,"ruler_changed",10,"Cedro","k","KingdomData","Aran","a","ActorData");
+    TypedEvent(j,"ruler_died",30,"Cedro","k","KingdomData","Aran","a","ActorData");
+    var child=TypedEvent(j,"ruler_changed",31,"Cedro","k","KingdomData","Bela","b","ActorData");child.ParentIds=new[]{"a"};
+    Refresh(j,50);string s=HistoricalLinks.Describe(j,j.Pages[0]);
+    Assert(s.Contains("20 anos") && s.Contains("Aran morreu") && s.Contains("descendente direto de Aran"),"Reign/succession links missing");
+});
+Test("unverified succession never invents family ties", () => {
+    var j=Journal();TypedEvent(j,"ruler_changed",10,"Cedro","k","KingdomData","Aran","a","ActorData");
+    TypedEvent(j,"ruler_changed",30,"Cedro","k","KingdomData","Bela","b","ActorData");Refresh(j,50);
+    Assert(!HistoricalLinks.Describe(j,j.Pages[0]).Contains("descendente"),"Family relationship invented");
+});
+Test("conquest and later transfer record years of rule", () => {
+    var j=Journal();TypedEvent(j,"city_captured",10,"Porto","city","CityData","Cedro","k","KingdomData","Arven","other","KingdomData");
+    TypedEvent(j,"city_transferred",35,"Porto","city","CityData","Luz","n","KingdomData","Cedro","k","KingdomData");Refresh(j,50);
+    string s=HistoricalLinks.Describe(j,j.Pages[0]);Assert(s.Contains("25 anos")&&s.Contains("domínio de Luz"),"Territory timeline missing");
+});
 var example = Journal(); example.WorldName = "EXEMPLO FICTÍCIO — Três séculos de Arven e Dolmar";
 AddEvent(example, "observation_started", 0, example.WorldName);
 TypedEvent(example, "kingdom_founded", 0, "Coroa de Arven", "arven", "KingdomData");

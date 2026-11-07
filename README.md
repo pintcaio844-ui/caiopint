@@ -2,7 +2,7 @@
 
 Um mod para **WorldBox 0.51.2 no Windows/Steam**, com **NeoModLoader**, que transforma os acontecimentos de cada partida em um livro histórico em português.
 
-**Protótipo 0.3.0, preparado para o primeiro teste dentro do jogo.** O código foi compilado e testado fora do WorldBox. A execução no jogo e a convivência com outros mods ainda precisam de validação.
+**Protótipo 0.4.0, preparado para o primeiro teste dentro do jogo.** O código foi compilado e testado fora do WorldBox. A execução no jogo e a convivência com outros mods ainda precisam de validação.
 
 ## Um século por página
 
@@ -72,3 +72,11 @@ A janela ganhou textura de pergaminho, capa de couro, filetes dourados e título
 Novas guerras podem ser contextualizadas com alianças rompidas, cidades anteriormente conquistadas ou guerras anteriores entre os mesmos reinos. A ordem dos fatos é preservada; essas relações não são tratadas automaticamente como o motivo da invasão.
 
 Para atualizar, feche o jogo, substitua a pasta WorldChronicle pela nova versão e reabra. Os saves existentes continuam compatíveis. Deixe o calendário avançar um ano para iniciar os registros ilustrados; imagens de séculos anteriores à atualização não são reconstruídas.
+
+## Atualização 0.4.0 — registro nativo e ligações históricas
+
+A captura também acompanha as mensagens adicionadas ao histórico lateral do WorldBox (WorldLogMessageExtensions.add). O texto nativo e os nomes são preservados nos acontecimentos de cada século. A morte de governantes é capturada pelos eventos nativos específicos.
+
+O narrador liga posse, duração aproximada do reinado, morte ou sucessão e guerras do período. Só identifica parentesco quando os identificadores de pais do personagem o confirmam. Conquistas e transferências posteriores da mesma cidade permitem registrar a duração aproximada do domínio. Sem nova transferência registrada, o texto informa apenas o intervalo acompanhado, sem presumir posse ininterrupta não observada.
+
+Não há IA nem necessidade de API. A retrospectiva por século continua, com todos os fatos disponíveis na própria página. A captura do histórico lateral começa após instalar esta atualização; mensagens antigas que não foram registradas não são reconstruídas. O teste de carregamento e captura ao vivo ainda precisa ser feito no WorldBox.

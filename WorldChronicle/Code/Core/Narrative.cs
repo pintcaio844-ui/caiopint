@@ -194,6 +194,9 @@ namespace WorldChronicle
             var direct = IsDirect(item);
             switch (item.Kind)
             {
+                case "native_history": return subject;
+                case "ruler_died": return other + ", governante de " + subject + ", morreu.";
+                case "ruler_murdered": return other + ", governante de " + subject + ", foi assassinado" + (Has(item.ContextName) ? " por " + context : String.Empty) + ".";
                 case "observation_started":
                     return "A observação deste mundo começou. Os reinos e cidades que já existiam passaram a compor o cenário inicial da crônica.";
                 case "kingdom_founded":

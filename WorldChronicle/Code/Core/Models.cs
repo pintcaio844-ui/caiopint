@@ -20,6 +20,8 @@ namespace WorldChronicle
         public string ActorName;
         public string ActorRole;
         public string DiscoveryType;
+        public string NativeLogType;
+        public string[] ParentIds;
         public string Detail;
         public string Evidence;
         public double WorldTime;

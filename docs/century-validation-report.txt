@@ -49,10 +49,14 @@ PASS illustrations stay in the century where captured
 PASS unsafe image content is rejected
 PASS illustration captions escape edited realm names
 PASS war context uses only preceding recorded alliance breakup
-RESULT 51/51 passed
-SHA256 3d0f8c218873d60a7c316bfc589bf81bd3224870afd7149ee859a84732743f24 /workspace/work/repository/WorldChronicle/Code/Core/CenturyBook.cs
-SHA256 db864a4b07df84e677402f01501ac7d23ac424bc690d3ab65527e815661394a2 /workspace/work/repository/WorldChronicle/Code/Core/Narrative.cs
-SHA256 c501b05202e85a56dc7947d6c2784e43c844c25f9cbb0370509ba2e399c41d3b /workspace/work/repository/WorldChronicle/Code/Core/Models.cs
+PASS native sidebar messages retain their literal historical text
+PASS reign duration and verified child succession form linked history
+PASS unverified succession never invents family ties
+PASS conquest and later transfer record years of rule
+RESULT 55/55 passed
+SHA256 7005804580acb4945774b66994a7b9e5a317782c55333f78e2f113755f3d2e45 /workspace/work/repository/WorldChronicle/Code/Core/CenturyBook.cs
+SHA256 5a72ada4018f9bf21c43727448cfc92a68fd0bfe34930a7b88c764397e74e55c /workspace/work/repository/WorldChronicle/Code/Core/Narrative.cs
+SHA256 dfe817850d1849a42bf500e05f8334ff4f9044cec5a0ecc16e9776834a99f493 /workspace/work/repository/WorldChronicle/Code/Core/Models.cs
 SHA256 62c5eed80ca4a0a3bef1f0e1f66207333296eee36aaefcaf957a5a01f389cf00 /workspace/work/repository/WorldChronicle/Code/Core/JournalStore.cs
 Scope: .NET8 unit/behavior tests of century aggregation, save checkpoints and book rendering. Example data is entirely fictional.
 Limitations: no WorldBox/Unity execution, no empirical timing validation of yearly sampling, and no proof of coexistence with subscribed mods. Manual time reversal is handled by the runtime; tested rollback uses an old saved checkpoint.
