@@ -1,0 +1,23 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using NomesCoerentes;
+namespace NeoModLoader.api { public class Declaration {public string FolderPath=Program.ModDirectory;} public abstract class BasicMod<T>{protected abstract void OnModLoad();public Declaration GetDeclaration(){return new Declaration();}protected static void LogInfo(string s){Console.WriteLine(s);}} }
+namespace UnityEngine { public class Debug { public static void LogError(string s){throw new Exception(s);} } }
+public enum MetaType { None,Unit,City,Kingdom,Religion,Culture,Family,Clan,Language,Alliance,War,Plot,Item,World,Special,Army,Building,Subspecies }
+public enum ActorSex {Male,Female,None}
+public class ActorAsset {public string id;}
+public class Actor {public ActorAsset asset; public bool isSexFemale(){return false;}public bool isSexMale(){return true;}}
+public class FakeData { public bool custom_name; }
+public class Army {public FakeData data=new FakeData(); public string name=""; public void setName(string n,bool custom){name=n;} [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(object k){name="VANILLA";} }
+public class Subspecies {public FakeData data=new FakeData(); public string name=""; public void setName(string n,bool custom){name=n;} [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(ActorAsset a,object tile){name="VANILLA";} }
+public static class NameGenerator { [MethodImpl(MethodImplOptions.NoInlining)] public static string generateName(Actor a,MetaType m,long n,ActorSex s){return "VANILLA";} [MethodImpl(MethodImplOptions.NoInlining)] public static string getName(string id){return "VANILLA";} [MethodImpl(MethodImplOptions.NoInlining)] public static string generateNameFromTemplate(string id,Actor a){return "VANILLA";} }
+public class Program {public static string ModDirectory=Path.GetFullPath("NomesCoerentes");static void Assert(bool ok,string reason){if(!ok)throw new Exception(reason);} public static void Main(){var c=new Catalog(Path.Combine(ModDirectory,"Nomes")); foreach(var race in new[]{"human","elf","orc","dwarf"})foreach(var cat in new[]{"unit","city","kingdom","religion","culture","family","clan","language"}) {var actual=c.Next(cat,race,"female");Assert(!string.IsNullOrWhiteSpace(actual),cat+race);}
+foreach(var file in Directory.GetFiles(Path.Combine(ModDirectory,"Nomes"),"*.txt")){var lines=File.ReadAllLines(file);Assert(lines.Length>0,"empty");Assert(lines.Distinct(StringComparer.OrdinalIgnoreCase).Count()==lines.Length,"duplicates");}
+c=new Catalog(Path.Combine(ModDirectory,"Nomes"));var expected=File.ReadAllLines(Path.Combine(ModDirectory,"Nomes","city_human.txt"));var seen=new HashSet<string>();string last="";foreach(var ignored in expected){last=c.Next("city","human","none");Assert(seen.Add(last),"repeat before exhaustion");}Assert(c.Next("city","human","none")!=last,"boundary repeat");Assert(c.Next("future_type","human","male")==null,"future metadata changed");
+new Main().GetType().GetMethod("OnModLoad",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(new Main(),null);
+foreach(var race in new[]{"human","elf","orc","dwarf","dragon","wolf","unknown_creature","dragon_red"})foreach(var cat in new[]{MetaType.Unit,MetaType.City,MetaType.Kingdom,MetaType.Religion,MetaType.Culture,MetaType.Family,MetaType.Clan,MetaType.Language})Assert(NameGenerator.generateName(new Actor{asset=new ActorAsset{id=race}},cat,1,ActorSex.Female)!="VANILLA","patch not active");
+Assert(NameGenerator.getName("alliance_name")!="VANILLA","alliance");Assert(NameGenerator.getName("world_name")!="VANILLA","world");Assert(NameGenerator.getName("kingdom_motto")=="VANILLA","motto changed");Assert(NameGenerator.generateNameFromTemplate("war_rebellion",null)!="VANILLA","war");Assert(NameGenerator.generateName(null,MetaType.Unit,1,ActorSex.None)!="VANILLA","null actor");Assert(NameGenerator.generateName(null,MetaType.None,1,ActorSex.None)=="VANILLA","unknown category"); var army=new Army();army.generateName(null);Assert(army.name!="VANILLA","army");army.data.custom_name=true;army.generateName(null);Assert(army.name=="VANILLA","custom army not preserved by prefix");var sub=new Subspecies();sub.generateName(new ActorAsset{id="elf"},null);Assert(sub.name!="VANILLA","subspecies");Assert(NameGenerator.generateNameFromTemplate("book_name_fable",null)!="VANILLA","book");Console.WriteLine("PASS: compilation, all race/category routes, creature fallback, null actor, shuffled bags, boundaries and real Harmony interception on a simulated API. NOT an in-game test.");}}

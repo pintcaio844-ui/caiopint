@@ -1,3 +1,5 @@
+> **Novo mod: Nomes Coerentes** — nomes históricos, mitológicos e de fantasia para pessoas, criaturas, cidades, reinos, religiões, culturas e famílias. [Baixar ZIP para testar](Downloads/NomesCoerentes-1.0.0.zip?raw=true) · [Instalação e limites](NomesCoerentes/LEIA-ME.txt). Altera só nomes; ainda requer teste dentro do WorldBox.
+
 # Livro do Mundo — Cronista do Mundo
 
 Um mod para **WorldBox 0.51.2 no Windows/Steam**, com **NeoModLoader**, que transforma os acontecimentos de cada partida em um livro histórico em português.

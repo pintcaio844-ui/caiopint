@@ -1,0 +1,40 @@
+Linhagem Boreal
+Linhagem Austral
+Linhagem Alpina
+Linhagem Silvestre
+Linhagem Fluvial
+Linhagem Costeira
+Linhagem Insular
+Linhagem Lacustre
+Linhagem Montanhesa
+Linhagem Campestre
+Linhagem Tropical
+Linhagem Equatorial
+Linhagem Ártica
+Linhagem Antártica
+Linhagem Continental
+Linhagem Mediterrânea
+Linhagem Atlântica
+Linhagem Andina
+Linhagem Himalaia
+Linhagem Alpestre
+Linhagem Dourada
+Linhagem Prateada
+Linhagem Acobreada
+Linhagem Esmeralda
+Linhagem Safira
+Linhagem Rubi
+Linhagem Ônix
+Linhagem Jade
+Linhagem Âmbar
+Linhagem Pérola
+Linhagem de Avalon
+Linhagem de Arcádia
+Linhagem de Asgard
+Linhagem de Alfheim
+Linhagem de Midgard
+Linhagem de Valinor
+Linhagem de Beleriand
+Linhagem de Eldamar
+Linhagem de Narnia
+Linhagem de Azeroth

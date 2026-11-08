@@ -1,0 +1,81 @@
+NOMES COERENTES — versão 1.0.0 para teste
+WorldBox no PC/Steam + NeoModLoader (NML)
+
+INSTALAÇÃO
+1. Feche o WorldBox.
+2. Steam > WorldBox > Propriedades > Arquivos instalados > Explorar.
+3. Extraia a pasta NomesCoerentes deste pacote para a pasta Mods na raiz do jogo.
+   Resultado: WorldBox/Mods/NomesCoerentes/mod.json
+   O arquivo Main.cs e a pasta Nomes devem ficar ao lado de mod.json.
+   Se a sua instalação NML indicar outra pasta de mods-fonte, use a pasta indicada por ela.
+4. Abra o jogo com o modo experimental ativado e habilite Nomes Coerentes no NML.
+5. Reinicie o jogo se o NML solicitar.
+Não coloque o ZIP fechado na pasta de mods. Não é necessário compilar manualmente:
+o NML compila o arquivo Main.cs na inicialização.
+
+O QUE MUDA
+Só nomes novos gerados automaticamente. Pessoas e reis (o rei conserva sua
+identidade), criaturas naturais e invocadas, cidades, reinos, famílias, clãs,
+culturas, religiões e idiomas. Há listas próprias para humanos, elfos, anões e orcs.
+Criaturas têm grupos próprios: dragões, lobos, felinos, aves, mortos-vivos,
+demônios, fadas, ursos, seres aquáticos, animais domésticos, répteis, insetos e autômatos.
+Criaturas sem mapeamento usam nomes completos da mitologia e astronomia.
+Também intercepta os caminhos documentados de alianças, mundos, guerras,
+livros, equipamentos, exércitos e subespécies. Objetos de outros mods e mudanças
+futuras na API podem utilizar outros caminhos, que exigem adaptação.
+Não altera poderes, atributos, crenças, relações políticas, raças ou regras do jogo.
+
+ESTILO E VARIEDADE
+Mais de 2.600 nomes distintos, em 75 listas editáveis. Referências históricas,
+mitologia, Tolkien, Warcraft, Warhammer, Dungeons & Dragons e outras obras.
+As associações são uma escolha temática do mod, não afirmações de fidelidade
+histórica ou de cânone de uma única obra. Algumas listas de nomes têm inspiração
+mitológica compartilhada entre raças. Nomes de linhagens e alguns nomes coletivos
+são expressões completas e coerentes, não necessariamente lugares históricos reais.
+
+O sorteio escolhe nomes completos. Não junta sílabas, não inventa palavras e não
+adiciona números. Cada lista é embaralhada e percorrida antes de repetir. Nomes
+podem se repetir quando uma lista esgotar; a fila reinicia ao reabrir o jogo.
+Listas separadas podem compartilhar referências. Não há unicidade global.
+As pessoas usam listas masculinas/femininas quando o jogo informa o sexo; quando
+não informa, usam a lista conjunta. Não há troca de nome ao virar rei.
+
+MUNDOS JÁ EXISTENTES
+Não renomeia em massa entidades existentes nem substitui nomes personalizados
+pelo jogador. Afeta chamadas futuras de geração; mundos novos mostram melhor o efeito.
+Um personagem de um mundo antigo que já tem nome continuará com ele ao virar rei.
+Se salvar o mundo, os nomes ficam gravados nele mesmo depois de remover o mod.
+
+COMO PERSONALIZAR
+Abra os arquivos .txt de Nomes, usando UTF-8. Uma linha = um nome completo.
+Não deixe uma lista obrigatória vazia. Reinicie o jogo após editar.
+criaturas.tsv associa IDs internos de criaturas às listas; mantenha a tabulação.
+Você pode adicionar IDs de criaturas de outros mods nesse arquivo.
+
+TESTE NO JOGO
+Crie um mundo de teste e coloque humanos, elfos, anões e orcs.
+Confira pessoas comuns, reis, primeiras cidades, reinos, famílias, culturas e religiões.
+Crie dragões e animais; deixe ocorrer nascimentos e confira os nomes das crias.
+Renomeie uma pessoa manualmente, salve e reabra para conferir a preservação.
+
+COMPATIBILIDADE E LIMITES
+Código-fonte para NML moderno; contrato principal documentado em WorldBox 0.51.2,
+build 719. A identificação da assinatura também foi conferida na DLL pública do
+repositório NML obtida nesta sessão. Não foi testado dentro do WorldBox: o jogo
+comercial e os seus arquivos de instalação não estão disponíveis neste ambiente.
+Não há garantia de compatibilidade com toda atualização chamada de 'última versão'.
+Se a API central mudar, o mod informa erro explícito ao carregar.
+Outros mods que alteram os mesmos geradores podem interferir na seleção.
+Lemas, descrições e textos de interface não são nomes e continuam com o jogo.
+
+SE DER ERRO
+Confira no NML se o mod compilou e se apareceu a mensagem 'integração central instalada'.
+Envie o número exato da versão/build e o erro completo exibido pelo NML.
+Para remover, feche o jogo e tire somente a pasta NomesCoerentes de Mods.
+
+REFERÊNCIAS TÉCNICAS
+https://github.com/WorldBoxOpenMods/ModLoader
+https://github.com/WorldBoxOpenMods/ModExample
+https://lous12.github.io/worldbox-modding-docs/
+
+Este é um mod de fã, sem afiliação com os autores das obras citadas.
