@@ -1,21 +1,15 @@
-Nomes Coerentes 1.0.0 — validação fora do jogo
+Nomes Coerentes 1.1.0
 
-75 listas; 3.896 entradas nas listas; 2.733 nomes distintos entre elas.
-O mod inclui apenas código-fonte e dados próprios; nenhuma DLL do jogo é redistribuída.
+Teste real da 1.0.0 relatado pelo usuário: nomes coerentes apenas em reinos humanos.
+Os testes centrais antigos não demonstravam cobertura dos caminhos de personagens.
 
-PASS: compilação C# do Main.cs com BasicMod/API simulados e Harmony real.
-PASS: seleção nas quatro raças, criaturas e fallback, sem sílabas ou números extras.
-PASS: listas obrigatórias presentes; listas não vazias e sem duplicatas internas.
-PASS: fila embaralhada percorre uma lista antes de repetir e evita repetição na virada.
-PASS: interceptação Harmony do gerador simulado e caminhos adicionais.
-PASS: fallback para novas categorias desconhecidas; ator nulo não causa erro.
-PASS: integridade CRC do ZIP.
+Novas regressões ignoram deliberadamente o gerador central nos caminhos diretos:
+nascimento, leitura de nome, Actor.generateName e criação de metas.
+Verificam pertencimento às listas corretas de humanos, elfos, anões e orcs para
+pessoas, cidades, reinos, culturas, religiões, famílias, clãs e idiomas.
+Incluem dados previamente atribuídos/carregados, nomes femininos, estabilidade,
+nomes personalizados, aliases unit_elf/unit_dwarf e plurais.
 
-A assinatura principal e os caminhos de chamadas foram inspecionados estaticamente
-na Assembly-CSharp-Publicized.dll do repositório público WorldBoxOpenMods/ModLoader.
-A referência documental de versão é WorldBox 0.51.2 build 719.
-
-NÃO TESTADO: carregamento no NML real, execução no Unity/WorldBox, comportamento
-dentro de uma partida, todas as criaturas vanilla ou convivência com outros mods.
-O teste usa .NET 8 e Harmony 2.4.2; o runtime do jogo e sua Harmony podem diferir.
-O pacote é uma versão para teste, não uma garantia de compatibilidade futura.
+Compilação e interceptações Harmony em API simulada, .NET 8/Harmony 2.4.2.
+Assinaturas e parâmetro pTrack de NanoObject.setName inspecionados estaticamente
+na referência pública do NML. Não foi executado no Unity/WorldBox real.

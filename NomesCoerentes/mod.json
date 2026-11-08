@@ -2,8 +2,8 @@
   "name": "Nomes Coerentes",
   "author": "pintcaio844-ui",
   "GUID": "bruno.worldbox.nomescoerentes",
-  "version": "1.0.0",
-  "description": "Nomes completos históricos, mitológicos e de fantasia para unidades, criaturas, reinos, cidades, culturas, religiões e famílias. Altera somente nomes.",
+  "version": "1.1.0",
+  "description": "Nomes reais, históricos e mitológicos para personagens das quatro raças, criaturas, cidades, reinos, culturas, religiões e famílias. Correção direta no nascimento e na consulta de nomes automáticos.",
   "Dependencies": [],
   "OptionalDependencies": [],
   "IncompatibleWith": []

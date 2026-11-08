@@ -1,35 +1,30 @@
-Culto de Eru Ilúvatar
-Culto dos Valar
-Culto de Elbereth
-Culto de Varda
-Culto de Yavanna
-Culto de Manwë
-Culto de Ulmo
-Culto de Aulë
-Culto de Nienna
-Culto de Oromë
-Culto de Vána
-Culto de Estë
-Culto de Nessa
-Culto de Irmo
-Culto de Námo
-Culto de Tulkas
-Culto de Corellon
-Culto de Sehanine
-Culto de Hanali Celanil
-Culto de Aerdrie Faenya
-Culto de Rillifane Rallathil
-Culto de Solonor Thelandira
-Culto de Erevan Ilesere
-Culto de Labelas Enoreth
-Culto de Elune
-Culto de Cenarius
-Culto de Malorne
-Culto de Aessina
-Culto de Aviana
-Culto de Asuryan
-Culto de Isha
-Culto de Kurnous
-Culto de Lileath
-Culto de Hoeth
-Culto de Vaul
+Culto de Lugh
+Culto de Brigid
+Culto de Danu
+Culto de Dagda
+Culto de Morrigan
+Culto de Nuada
+Culto de Ogma
+Culto de Dian Cecht
+Culto de Goibniu
+Culto de Manannán
+Culto de Aengus
+Culto de Boann
+Culto de Arawn
+Culto de Rhiannon
+Culto de Cerridwen
+Culto de Cernunnos
+Culto de Epona
+Culto de Taranis
+Culto de Teutates
+Culto de Esus
+Culto de Belenus
+Culto de Grannus
+Culto de Rosmerta
+Culto de Sucellus
+Culto de Nantosuelta
+Culto de Sequana
+Culto de Sulis
+Culto de Nodens
+Culto de Andraste
+Culto de Belisama

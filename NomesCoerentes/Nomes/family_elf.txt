@@ -1,30 +1,50 @@
-Casa de Fëanor
-Casa de Fingolfin
-Casa de Finarfin
-Casa de Finwë
-Casa de Elrond
-Casa de Elwë
-Casa de Olwë
-Casa de Ingwë
-Casa de Oropher
-Casa de Celeborn
-Casa de Galadriel
-Casa de Círdan
-Casa de Gil-galad
-Casa de Amroth
-Casa de Thingol
-Casa de Eärendil
-Sunstrider
-Windrunner
-Stormrage
-Whisperwind
-Shadowsong
-Feathermoon
-Staghelm
-Ravencrest
-Moonwhisper
-Duskwhisper
-Nightbreeze
-Eveningfall
-Brightwing
-Morningsong
+O’Brien
+O’Connor
+O’Neill
+O’Sullivan
+O’Donnell
+O’Reilly
+O’Rourke
+O’Callaghan
+O’Doherty
+O’Leary
+O’Mahony
+O’Driscoll
+O’Donovan
+MacCarthy
+MacDonald
+MacLeod
+MacKenzie
+MacGregor
+MacLean
+MacKay
+MacLaren
+MacPherson
+Campbell
+Cameron
+Fraser
+Gordon
+Graham
+Grant
+Stewart
+Wallace
+Douglas
+Sinclair
+Murray
+Robertson
+Ross
+Scott
+Hamilton
+Ferguson
+Buchanan
+Drummond
+Davies
+Evans
+Hughes
+Jones
+Lewis
+Morgan
+Owen
+Powell
+Price
+Thomas

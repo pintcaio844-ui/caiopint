@@ -1,70 +1,40 @@
-Excalibur
-Durandal
-Joyeuse
-Curtana
-Caliburn
-Gram
-Balmung
-Nothung
-Tyrfing
-Dáinsleif
-Hrunting
-Nægling
-Skofnung
-Mistilteinn
-Hofud
-Gungnir
-Mjölnir
-Brisingamen
-Draupnir
-Gleipnir
-Megingjord
-Andvaranaut
-Svalinn
-Hǫfuð
-Laevateinn
-Fragarach
-Claíomh Solais
-Gáe Bulg
-Gáe Assail
-Moralltach
-Beagalltach
-Caladbolg
-Caledfwlch
-Rhongomyniad
-Carnwennan
-Dyrnwyn
-Glamdring
-Orcrist
-Sting
-Andúril
-Narsil
-Gurthang
-Anglachel
-Anguirel
-Aeglos
-Ringil
-Gúthwinë
-Herugrim
-Grond
-Dramborleg
-Aranrúth
-Belthronding
-Angrist
-Barazanthul
-Caduceu
-Tridente de Poseidon
-Raio de Zeus
-Égide
-Harpe
-Talaria
-Kusanagi
-Yasakani no Magatama
-Yata no Kagami
-Ame-no-Nuboko
-Honjo Masamune
-Muramasa
-Tizona
-Colada
-Zulfiqar
-Shamshir-e Zomorrodnegar
+Espada de Aço
+Espada de Ferro
+Espada de Bronze
+Lança de Bronze
+Lança de Ferro
+Escudo de Carvalho
+Escudo de Ferro
+Arco de Teixo
+Arco de Olmo
+Machado de Aço
+Machado de Bronze
+Adaga de Ferro
+Adaga de Aço
+Martelo de Guerra
+Maça de Ferro
+Cimitarra
+Sabre
+Rapieira
+Florete
+Gládio
+Espata
+Falchion
+Montante
+Zweihander
+Alabarda
+Partazana
+Pique
+Tridente
+Funda
+Besta
+Arco Longo
+Arco Curto
+Arco Composto
+Armadura de Placas
+Cota de Malha
+Elmo de Aço
+Elmo de Bronze
+Couraça
+Broquel
+Escudo Redondo

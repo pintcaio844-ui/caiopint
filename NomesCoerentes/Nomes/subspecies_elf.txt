@@ -1,20 +1,30 @@
-Noldor
-Vanyar
-Teleri
-Sindar
-Nandor
-Laiquendi
-Avari
-Galadhrim
-Falathrim
-Falmari
-Kal’dorei
-Quel’dorei
-Sin’dorei
-Shal’dorei
-Ren’dorei
-Eladrin
-Elfos Silvestres
-Altos Elfos
-Elfos do Mar
-Elfos da Lua
+Gaélica
+Irlandesa
+Escocesa
+Galesa
+Bretã
+Córnica
+Picta
+Celta
+Gaulesa
+Britônica
+Celtibera
+Galaica
+Lusitana
+Belga
+Helvécia
+Arverna
+Edua
+Carnuta
+Trevera
+Volca
+Brigante
+Icena
+Silura
+Ordovica
+Dumnônia
+Damnoniana
+Caledônia
+Manesa
+Cambriana
+Armoricana

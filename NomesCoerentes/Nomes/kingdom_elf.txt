@@ -1,40 +1,30 @@
-Doriath
-Nargothrond
-Gondolin
-Lothlórien
-Lindon
-Eregion
-Reino da Floresta
-Valinor
-Eldamar
-Beleriand
-Ossiriand
-Hithlum
-Dorthonion
-Nevrast
-Alfheim
-Quel’Thalas
-Kal’dorei
-Shal’dorei
-Quel’dorei
-Sin’dorei
-Evermeet
-Cormanthyr
-Illefarn
-Eaerlann
-Siluvanede
-Aryvandaar
-Ilythiir
-Miyeritar
-Shantel Othreier
-Keltormir
-Ulthuan
-Avelorn
-Saphery
-Chrace
-Caledor
-Tiranoc
-Ellyrion
-Cothique
-Yvresse
-Eataine
+Reino de Gwynedd
+Reino de Powys
+Reino de Deheubarth
+Reino de Dyfed
+Reino de Gwent
+Reino de Brycheiniog
+Reino de Dumnonia
+Reino de Strathclyde
+Reino de Dal Riata
+Reino de Alba
+Reino da Escócia
+Reino da Irlanda
+Reino de Leinster
+Reino de Munster
+Reino de Connacht
+Reino de Ulster
+Reino de Meath
+Reino de Dublin
+Reino da Nortúmbria
+Reino da Mércia
+Reino de Wessex
+Reino de Kent
+Reino de Sussex
+Reino de Essex
+Reino da Ânglia Oriental
+Reino de Rheged
+Reino de Elmet
+Reino de Gododdin
+Reino da Cornualha
+Ducado da Bretanha

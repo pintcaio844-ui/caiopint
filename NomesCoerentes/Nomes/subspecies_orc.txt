@@ -1,20 +1,30 @@
-Uruk-hai
-Snaga
-Uruk de Mordor
-Orcs de Gundabad
-Orcs de Angmar
-Orcs de Isengard
-Orcs de Dol Guldur
-Mag’har
-Frostwolf
-Warsong
-Blackrock
-Shadowmoon
-Thunderlord
-Shattered Hand
-Bleeding Hollow
-Dragonmaw
-Mok’Nathal
-Black Orc
-Savage Orc
-Iron Horde
+Persa
+Parta
+Sogdiana
+Bactriana
+Corásmia
+Cita
+Sármata
+Alana
+Masságeta
+Daha
+Saka
+Kushana
+Heftalita
+Túrquica
+Goturca
+Uigur
+Quirguiz
+Cazaque
+Uzbeque
+Turcomena
+Tajique
+Mongol
+Buriata
+Calmuca
+Nogai
+Tártara
+Búlgara do Volga
+Baskir
+Chuvache
+Avar

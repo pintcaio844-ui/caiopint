@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using HarmonyLib;
 using NeoModLoader.api;
 
@@ -12,6 +13,9 @@ namespace NomesCoerentes
     {
         private static Catalog catalog;
         private static bool warned;
+        [ThreadStatic] private static bool correcting;
+        private static readonly ConditionalWeakTable<object, NameStamp> checkedNames = new ConditionalWeakTable<object, NameStamp>();
+        private sealed class NameStamp { public string Name; public string Species; }
         protected override void OnModLoad()
         {
             catalog = new Catalog(Path.Combine(GetDeclaration().FolderPath, "Nomes"));
@@ -45,7 +49,93 @@ namespace NomesCoerentes
                     if (candidate.Name == "generateName" && candidate.ReturnType == typeof(void))
                         harmony.Patch(candidate, prefix: new HarmonyMethod(typeof(Main), "BeforeObjectName"));
             }
-            LogInfo("Nomes Coerentes: " + catalog.Count + " nomes completos; integração central instalada. Novos nomes apenas.");
+            // Explicit lifecycle hooks cover culture/onomastics and preassigned names.
+            PatchPostfix(harmony, actor, "generateNewName", "AfterActorBirth");
+            PatchPostfix(harmony, actor, "getName", "AfterActorRead");
+            PatchPostfix(harmony, actor, "generateName", "AfterActorGenerated");
+            foreach (var pair in new[] { "City:generateName", "Kingdom:newCivKingdom", "Culture:createCulture", "Clan:newClan", "Family:generateName", "Religion:generateName", "Language:generateName" })
+            {
+                var parts = pair.Split(':');
+                PatchPostfix(harmony, AccessTools.TypeByName(parts[0]), parts[1], "AfterMetaCreated");
+            }
+            LogInfo("Nomes Coerentes: " + catalog.Count + " nomes completos; integração central e caminhos diretos instalados (personagens e quatro raças).");
+        }
+
+        private static void PatchPostfix(Harmony harmony, Type type, string name, string handler)
+        {
+            if (type == null) return;
+            foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                if (method.Name == name && (handler != "AfterActorRead" || method.ReturnType == typeof(string)))
+                    harmony.Patch(method, postfix: new HarmonyMethod(typeof(Main), handler));
+        }
+
+        private static string Species(object actor)
+        {
+            object asset = Read(actor, "asset");
+            string template = Convert.ToString(Read(asset, "name_template_unit"));
+            string race = Catalog.Race(template);
+            return race != "other" ? race : Convert.ToString(Read(asset, "id"));
+        }
+
+        private static string Sex(object actor)
+        {
+            return Convert.ToString(Read(Read(actor, "data"), "sex")).ToLowerInvariant();
+        }
+
+        private static string CorrectObject(object target, string category, object actor)
+        {
+            if (correcting || target == null) return null;
+            object data = Read(target, "data");
+            if (data == null || Convert.ToBoolean(Read(data, "custom_name") ?? false)) return null;
+            string species = Species(actor);
+            string current = Convert.ToString(Read(data, "name"));
+            NameStamp stamp = checkedNames.GetValue(data, key => new NameStamp());
+            if (stamp.Name == current && stamp.Species == species) return current;
+            if (catalog.Contains(category, species, current))
+            { stamp.Name = current; stamp.Species = species; return current; }
+            var setter = AccessTools.Method(target.GetType(), "setName", new[] { typeof(string), typeof(bool) });
+            if (setter == null) return null;
+            correcting = true;
+            try
+            {
+                string value = catalog.Next(category, species, Sex(actor));
+                if (value == null) return null;
+                // The second argument is pTrack, NOT a custom-name flag.
+                setter.Invoke(target, new object[] { value, true });
+                stamp.Name = value; stamp.Species = species;
+                return value;
+            }
+            finally { correcting = false; }
+        }
+
+        private static void AfterActorBirth(object __instance) { CorrectSafely(__instance, "unit", __instance); }
+        private static void AfterActorRead(object __instance, ref string __result)
+        {
+            string name = CorrectSafely(__instance, "unit", __instance);
+            if (name != null) __result = name;
+        }
+        private static void AfterActorGenerated(object __instance, object[] __args, ref string __result)
+        {
+            string category = Convert.ToString(__args[0]).ToLowerInvariant();
+            string species = Species(__instance);
+            if (!catalog.Contains(category, species, __result))
+            {
+                string value = catalog.Next(category, species, __args.Length > 2 ? Convert.ToString(__args[2]).ToLowerInvariant() : Sex(__instance));
+                if (value != null) __result = value;
+            }
+        }
+        private static void AfterMetaCreated(object __instance, object[] __args)
+        {
+            CorrectSafely(__instance, __instance.GetType().Name.ToLowerInvariant(), __args.Length > 0 ? __args[0] : null);
+        }
+        private static string CorrectSafely(object target, string category, object actor)
+        {
+            try { return CorrectObject(target, category, actor); }
+            catch (Exception error)
+            {
+                if (!warned) { warned = true; UnityEngine.Debug.LogError("Nomes Coerentes: falha no caminho de personagens/metas. " + error); }
+                return null;
+            }
         }
 
         private static bool BeforeObjectName(object __instance, object[] __args)
@@ -84,8 +174,14 @@ namespace NomesCoerentes
             else if (id.StartsWith("war_")) category = "war";
             else if (id.StartsWith("book_")) category = "book";
             else if (id.StartsWith("item_") || id.EndsWith("_item")) category = "item";
+            string species = Catalog.Race(id);
+            if (category == null)
+                foreach (string c in new[] { "unit", "city", "kingdom", "religion", "culture", "family", "clan", "language" })
+                    if (id.EndsWith("_" + c, StringComparison.Ordinal)) { category = c; break; }
             if (category == null) return true;
-            string name = catalog.Next(category, "", "none");
+            object actor = __args.FirstOrDefault(x => x != null && x.GetType().Name == "Actor");
+            if (species == "other" && actor != null) species = Species(actor);
+            string name = catalog.Next(category, species, actor == null ? "none" : Sex(actor));
             if (name == null) return true;
             __result = name;
             return false;
@@ -99,7 +195,7 @@ namespace NomesCoerentes
                 string category = Convert.ToString(__args[1]).ToLowerInvariant();
                 object actor = __args[0];
                 object asset = Read(actor, "asset");
-                string species = Convert.ToString(Read(asset, "id"));
+                string species = Species(actor);
                 string sex = Convert.ToString(__args[3]).ToLowerInvariant();
                 if (sex == "none" && actor != null)
                 {
@@ -164,12 +260,41 @@ namespace NomesCoerentes
                 if (!bags.ContainsKey(category + "_other")) throw new InvalidDataException("Lista obrigatória ausente: " + category + "_other");
         }
 
+        public static string Race(string value)
+        {
+            string[] tokens = (value ?? "").ToLowerInvariant().Split(new[] { '_', '-', ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string token in tokens)
+            {
+                if (token == "human" || token == "humans") return "human";
+                if (token == "elf" || token == "elves") return "elf";
+                if (token == "dwarf" || token == "dwarves" || token == "dwarfs") return "dwarf";
+                if (token == "orc" || token == "orcs") return "orc";
+            }
+            return "other";
+        }
+        public bool Contains(string category, string species, string value)
+        {
+            string race = Race(species);
+            if (category == "unit" && race == "other")
+            {
+                string id = (species ?? "").ToLowerInvariant();
+                string group;
+                if (creatures.TryGetValue(id, out group)) race = group;
+                else
+                {
+                    var best = creatures.Keys.Where(k => id.StartsWith(k + "_", StringComparison.Ordinal)).OrderByDescending(k => k.Length).FirstOrDefault();
+                    if (best != null) race = creatures[best];
+                }
+            }
+            Bag bag;
+            if (bags.TryGetValue(category + "_" + race, out bag)) return bag.Contains(value);
+            return bags.TryGetValue(category + "_other", out bag) && bag.Contains(value);
+        }
+
         public string Next(string category, string species, string sex)
         {
-            string race = "other";
             string id = (species ?? "").ToLowerInvariant();
-            foreach (string r in new[] { "human", "elf", "orc", "dwarf" })
-                if (id == r || id.StartsWith(r + "_", StringComparison.Ordinal)) { race = r; break; }
+            string race = Race(id);
             if (category == "unit" && race == "other")
             {
                 string group;
@@ -194,9 +319,11 @@ namespace NomesCoerentes
         {
             private readonly string[] values;
             private readonly Random random;
+            private readonly HashSet<string> names;
+            public bool Contains(string value) { return names.Contains(value ?? ""); }
             private int position;
             private string last;
-            public Bag(string[] values, Random random) { this.values = values; this.random = random; position = values.Length; }
+            public Bag(string[] values, Random random) { this.values = values; this.random = random; names = new HashSet<string>(values, StringComparer.Ordinal); position = values.Length; }
             public string Next()
             {
                 if (position == values.Length)

@@ -1,44 +1,60 @@
-Khazad-dûm
-Erebor
-Nogrod
-Belegost
-Gundabad
-Khazad-dûm Oriental
-Aglarond
-Barazinbar
-Zirakzigil
-Bundushathûr
-Moria
-Nidavellir
-Svartalfheim
-Ironforge
-Shadowforge
-Grim Batol
-Aerie Peak
-Blackrock
-Thor Modan
-Uldaman
-Ulduar
-Uldum
-Gnomeregan
-Karak-a-Karaz
-Karak Kadrin
-Karaz-a-Karak
-Karak Eight Peaks
-Karak Azul
-Barak Varr
-Zhufbar
-Karak Hirn
-Karak Norn
-Karak Izor
-Karak Ziflin
-Karak Varn
-Karak Ungor
-Karak Drazh
-Karak Dum
-Gauntlgrym
-Mithral Hall
-Citadel Adbar
-Citadel Felbarr
-Blingdenstone
-Gracklstugh
+Bergen
+Oslo
+Trondheim
+Stavanger
+Tromso
+Bodo
+Narvik
+Lillehammer
+Hamar
+Drammen
+Alesund
+Kristiansand
+Molde
+Roros
+Steinkjer
+Estocolmo
+Uppsala
+Visby
+Lund
+Malmo
+Gotemburgo
+Orebro
+Kalmar
+Falun
+Linkoping
+Norrkoping
+Umea
+Kiruna
+Vasteras
+Karlstad
+Copenhague
+Aarhus
+Odense
+Aalborg
+Roskilde
+Ribe
+Viborg
+Helsingor
+Kolding
+Horsens
+Reykjavik
+Akureyri
+Husavik
+Keflavik
+Selfoss
+Helsinque
+Turku
+Tampere
+Porvoo
+Oulu
+Rovaniemi
+Birka
+Sigtuna
+Skara
+Nykoping
+Hedeby
+Skien
+Tonsberg
+Haugesund
+Fredericia

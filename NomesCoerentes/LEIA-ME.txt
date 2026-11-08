@@ -1,81 +1,65 @@
-NOMES COERENTES — versão 1.0.0 para teste
-WorldBox no PC/Steam + NeoModLoader (NML)
+NOMES COERENTES 1.1.0 — PC/Steam + NeoModLoader — versão para teste
 
-INSTALAÇÃO
-1. Feche o WorldBox.
-2. Steam > WorldBox > Propriedades > Arquivos instalados > Explorar.
-3. Extraia a pasta NomesCoerentes deste pacote para a pasta Mods na raiz do jogo.
-   Resultado: WorldBox/Mods/NomesCoerentes/mod.json
-   O arquivo Main.cs e a pasta Nomes devem ficar ao lado de mod.json.
-   Se a sua instalação NML indicar outra pasta de mods-fonte, use a pasta indicada por ela.
-4. Abra o jogo com o modo experimental ativado e habilite Nomes Coerentes no NML.
-5. Reinicie o jogo se o NML solicitar.
-Não coloque o ZIP fechado na pasta de mods. Não é necessário compilar manualmente:
-o NML compila o arquivo Main.cs na inicialização.
+ATUALIZAÇÃO
+Feche o jogo. Remova a pasta antiga Mods/NomesCoerentes e extraia a pasta
+NomesCoerentes do novo ZIP para Mods, na raiz da instalação do WorldBox.
+Não mantenha duas versões instaladas. O NML compila Main.cs ao iniciar.
+Ative o modo experimental. Confira a versão 1.1.0 na lista do NML e a mensagem
+"integração central e caminhos diretos instalados".
 
-O QUE MUDA
-Só nomes novos gerados automaticamente. Pessoas e reis (o rei conserva sua
-identidade), criaturas naturais e invocadas, cidades, reinos, famílias, clãs,
-culturas, religiões e idiomas. Há listas próprias para humanos, elfos, anões e orcs.
-Criaturas têm grupos próprios: dragões, lobos, felinos, aves, mortos-vivos,
-demônios, fadas, ursos, seres aquáticos, animais domésticos, répteis, insetos e autômatos.
-Criaturas sem mapeamento usam nomes completos da mitologia e astronomia.
-Também intercepta os caminhos documentados de alianças, mundos, guerras,
-livros, equipamentos, exércitos e subespécies. Objetos de outros mods e mudanças
-futuras na API podem utilizar outros caminhos, que exigem adaptação.
-Não altera poderes, atributos, crenças, relações políticas, raças ou regras do jogo.
+CORREÇÃO
+A versão 1.0.0 funcionou apenas nos reinos humanos no teste relatado pelo usuário.
+Esta versão intercepta diretamente Actor.generateNewName (nascimentos/criação),
+Actor.getName (nomes automáticos previamente atribuídos ou carregados),
+Actor.generateName e os eventos de criação de cidades, reinos, culturas, religiões,
+famílias, clãs e idiomas. Modelos de nomes chamados diretamente também são tratados.
+Identifica a raça pelo modelo de nomes e pelo ID, incluindo unit_elf, unit_dwarf,
+prefixos e plurais. Elfos, anões e orcs têm suas próprias listas.
 
-ESTILO E VARIEDADE
-Mais de 2.600 nomes distintos, em 75 listas editáveis. Referências históricas,
-mitologia, Tolkien, Warcraft, Warhammer, Dungeons & Dragons e outras obras.
-As associações são uma escolha temática do mod, não afirmações de fidelidade
-histórica ou de cânone de uma única obra. Algumas listas de nomes têm inspiração
-mitológica compartilhada entre raças. Nomes de linhagens e alguns nomes coletivos
-são expressões completas e coerentes, não necessariamente lugares históricos reais.
+NOMES REAIS E HISTÓRICOS
+Humanos: nomes reais e históricos de diversas regiões.
+Elfos: nomes celtas, irlandeses, galeses e escoceses.
+Anões: nomes escandinavos e nórdicos.
+Orcs: nomes da Ásia Central, Anatólia e regiões vizinhas.
+As associações são escolhas estéticas para diferenciar as listas no jogo,
+sem atribuir características de espécies fictícias a povos reais.
+Cidades, reinos, culturas e famílias usam referências históricas e geográficas.
+Religiões usam cultos históricos e divindades de mitologias conhecidas.
+Animais usam nomes pessoais e apelidos comuns. Foram retiradas das listas das
+raças as referências a universos de fantasia. Não há mistura de sílabas sem sentido.
+Altera apenas nomes: não muda crenças, atributos, poderes ou comportamento.
 
-O sorteio escolhe nomes completos. Não junta sílabas, não inventa palavras e não
-adiciona números. Cada lista é embaralhada e percorrida antes de repetir. Nomes
-podem se repetir quando uma lista esgotar; a fila reinicia ao reabrir o jogo.
-Listas separadas podem compartilhar referências. Não há unicidade global.
-As pessoas usam listas masculinas/femininas quando o jogo informa o sexo; quando
-não informa, usam a lista conjunta. Não há troca de nome ao virar rei.
+MUNDOS EXISTENTES
+Nomes automáticos de personagens fora da lista da raça são corrigidos quando o
+jogo os consulta. Inclui nomes atribuídos por culturas e carregados de um save.
+A correção é gravada nos dados e fica estável nas consultas seguintes.
+Nomes marcados pelo jogo como personalizados pelo jogador são preservados.
+Teste primeiro em uma cópia do mundo: as mudanças ficam gravadas no save.
+Cidades e reinos antigos não são renomeados em massa; seus nomes novos são
+aplicados na criação. Um mundo novo permite conferir todas as entidades.
 
-MUNDOS JÁ EXISTENTES
-Não renomeia em massa entidades existentes nem substitui nomes personalizados
-pelo jogador. Afeta chamadas futuras de geração; mundos novos mostram melhor o efeito.
-Um personagem de um mundo antigo que já tem nome continuará com ele ao virar rei.
-Se salvar o mundo, os nomes ficam gravados nele mesmo depois de remover o mod.
-
-COMO PERSONALIZAR
-Abra os arquivos .txt de Nomes, usando UTF-8. Uma linha = um nome completo.
-Não deixe uma lista obrigatória vazia. Reinicie o jogo após editar.
-criaturas.tsv associa IDs internos de criaturas às listas; mantenha a tabulação.
-Você pode adicionar IDs de criaturas de outros mods nesse arquivo.
+VARIEDADE
+2273 nomes distintos, 5851 entradas em 75 listas (algumas compartilham nomes).
+O sorteio percorre uma lista antes de repetir e não acrescenta números.
+Não há unicidade global; as filas reiniciam ao reabrir o jogo.
+Edite os .txt de Nomes em UTF-8, um nome por linha. Reinicie após editar.
+criaturas.tsv mapeia IDs de criaturas para grupos de nomes.
 
 TESTE NO JOGO
-Crie um mundo de teste e coloque humanos, elfos, anões e orcs.
-Confira pessoas comuns, reis, primeiras cidades, reinos, famílias, culturas e religiões.
-Crie dragões e animais; deixe ocorrer nascimentos e confira os nomes das crias.
-Renomeie uma pessoa manualmente, salve e reabra para conferir a preservação.
+Coloque as quatro raças e deixe nascer crianças. Confira adultos, bebês e nomes
+femininos. Abra a mesma pessoa várias vezes: o nome deve permanecer estável.
+Renomeie uma pessoa manualmente: seu nome deve ser preservado.
+Confira cidades, reinos, famílias, culturas, religiões e idiomas de cada raça.
+Teste também uma cópia de um mundo existente, inclusive filhos de culturas antigas.
 
-COMPATIBILIDADE E LIMITES
-Código-fonte para NML moderno; contrato principal documentado em WorldBox 0.51.2,
-build 719. A identificação da assinatura também foi conferida na DLL pública do
-repositório NML obtida nesta sessão. Não foi testado dentro do WorldBox: o jogo
-comercial e os seus arquivos de instalação não estão disponíveis neste ambiente.
-Não há garantia de compatibilidade com toda atualização chamada de 'última versão'.
-Se a API central mudar, o mod informa erro explícito ao carregar.
-Outros mods que alteram os mesmos geradores podem interferir na seleção.
-Lemas, descrições e textos de interface não são nomes e continuam com o jogo.
+VALIDAÇÃO E LIMITES
+Testes de regressão simulados verificam que os caminhos diretos entregam nomes
+da lista da raça correta, mesmo ignorando completamente o gerador central.
+Incluem nomes previamente atribuídos, nomes femininos, estabilidade e nomes manuais.
+A referência de API é WorldBox 0.51.2/build 719 e a DLL pública do projeto NML.
+Não foi executado no Unity/WorldBox real neste ambiente. A validação dentro do
+jogo continua necessária. Outros mods de nomes podem interferir.
+Se falhar, envie o erro do NML e a versão/build exata do WorldBox.
 
-SE DER ERRO
-Confira no NML se o mod compilou e se apareceu a mensagem 'integração central instalada'.
-Envie o número exato da versão/build e o erro completo exibido pelo NML.
-Para remover, feche o jogo e tire somente a pasta NomesCoerentes de Mods.
-
-REFERÊNCIAS TÉCNICAS
-https://github.com/WorldBoxOpenMods/ModLoader
-https://github.com/WorldBoxOpenMods/ModExample
-https://lous12.github.io/worldbox-modding-docs/
-
-Este é um mod de fã, sem afiliação com os autores das obras citadas.
+Referências: github.com/WorldBoxOpenMods/ModLoader e
+lous12.github.io/worldbox-modding-docs/

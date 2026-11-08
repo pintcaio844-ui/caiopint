@@ -1,36 +1,60 @@
-Orgrimmar
-Durotar
-Warsong Hold
-Garadar
-Grommashar
-Highmaul
-Bladefist Bay
-Razor Hill
-Crossroads
-Hammerfall
-Kargath
-Stoneard
-Splintertree
-Zeth’Gor
-Mok’Nathal
-Thunderlord Stronghold
-Mordor
-Barad-dûr
-Minas Morgul
-Cirith Ungol
-Durthang
-Carn Dûm
-Dol Guldur
-Isengard
-Gundabad
-Goblin-town
-Mount Gram
-Gorgoroth
-Nurn
-Udûn
-Nagrand
-Black Crag
-Black Fire Pass
-Red Eye Mountain
-Grom’gol
-Lok-rath
+Samarkand
+Bukhara
+Khiva
+Merv
+Balkh
+Herat
+Kabul
+Ghazni
+Kandahar
+Kashgar
+Turfan
+Khotan
+Tashkent
+Fergana
+Andijan
+Kokand
+Namangan
+Otrar
+Taraz
+Turkestan
+Almaty
+Astana
+Bishkek
+Osh
+Karakol
+Dushanbe
+Khujand
+Panjakent
+Ashgabat
+Nisa
+Urgench
+Termez
+Shahrisabz
+Nishapur
+Rayy
+Isfahan
+Shiraz
+Tabriz
+Hamadan
+Qazvin
+Yazd
+Kerman
+Mashhad
+Kermanshah
+Ankara
+Konya
+Kayseri
+Bursa
+Edirne
+Sivas
+Erzurum
+Trabzon
+Malatya
+Diyarbakir
+Mardin
+Urfa
+Harran
+Bagda
+Mosul
+Basra
