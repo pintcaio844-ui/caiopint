@@ -53,13 +53,18 @@ namespace NomesCoerentes
             PatchPostfix(harmony, actor, "generateNewName", "AfterActorBirth");
             PatchPostfix(harmony, actor, "getName", "AfterActorRead");
             PatchPostfix(harmony, actor, "setFamily", "AfterActorBirth");
+            PatchPostfix(harmony, actor, "setParent1", "AfterParentsLinked");
+            PatchPostfix(harmony, actor, "setParent2", "AfterParentsLinked");
             PatchPostfix(harmony, actor, "generateName", "AfterActorGenerated");
-            foreach (var pair in new[] { "City:generateName", "Kingdom:newCivKingdom", "Culture:createCulture", "Clan:newClan", "Family:generateName", "Religion:generateName", "Language:generateName" })
+            foreach (var pair in new[] { "City:generateName", "Kingdom:newCivKingdom", "Culture:createCulture", "Clan:newClan", "Family:generateName", "Family:newFamily", "Religion:generateName", "Language:generateName" })
             {
                 var parts = pair.Split(':');
                 PatchPostfix(harmony, AccessTools.TypeByName(parts[0]), parts[1], "AfterMetaCreated");
             }
-            LogInfo("Nomes Coerentes: " + catalog.Count + " nomes completos; integração central e caminhos diretos instalados (personagens e quatro raças).");
+            var capture = AccessTools.Method(AccessTools.TypeByName("City"), "finishCapture", new[] { AccessTools.TypeByName("Kingdom") });
+            if (capture != null)
+                harmony.Patch(capture, prefix: new HarmonyMethod(typeof(Main), "BeforeConquest"), postfix: new HarmonyMethod(typeof(Main), "AfterConquest"));
+            LogInfo("Nomes Coerentes: " + catalog.Count + " nomes completos; 1.3.0: nomes, sobrenomes herdados e casas de reinos instalados.");
         }
 
         private static void PatchPostfix(Harmony harmony, Type type, string name, string handler)
@@ -92,9 +97,16 @@ namespace NomesCoerentes
             string current = Convert.ToString(Read(data, "name"));
             NameStamp stamp = checkedNames.GetValue(data, key => new NameStamp());
             bool person = category == "unit" && Catalog.Race(species) != "other";
-            string familyName = person ? Convert.ToString(Read(Read(Read(actor, "family"), "data"), "name")).Trim() : "";
+            string familyName = person ? Surname(actor, false, 0) : "";
             if (stamp.Name == current && stamp.Species == species && stamp.FamilyName == familyName) return current;
             if (person) return PersonalName(target, data, species, current, familyName, stamp);
+            string house = category == "kingdom" ? SavedText(data, "nomescoerentes.realm_house") : category == "family" ? SavedText(data, "nomescoerentes.house") : "";
+            if (house.Length > 0)
+            {
+                string fixedName = category == "kingdom" ? "Reino da Casa " + house : house;
+                if (current != fixedName) WriteName(target, fixedName);
+                return fixedName;
+            }
             if (catalog.Contains(category, species, current))
             { stamp.Name = current; stamp.Species = species; stamp.FamilyName = familyName; return current; }
             var setter = AccessTools.Method(target.GetType(), "setName", new[] { typeof(string), typeof(bool) });
@@ -112,41 +124,120 @@ namespace NomesCoerentes
             finally { correcting = false; }
         }
 
-        // The surname is exactly the current vanilla Family name. No inheritance rules change.
-        private static string PersonalName(object actor, object data, string species, string current, string familyName, NameStamp stamp)
+        // Surnames are saved independently of temporary vanilla family membership.
+        private static string PersonalName(object actor, object data, string species, string current, string surname, NameStamp stamp)
         {
             string given = catalog.Contains("unit", species, current) ? current : SavedGiven(data);
-            if (string.IsNullOrEmpty(given) && familyName.Length > 0 && current.EndsWith(" " + familyName, StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(given) && surname.Length > 0 && current.EndsWith(" " + surname, StringComparison.Ordinal))
             {
-                string candidate = current.Substring(0, current.Length - familyName.Length - 1);
+                string candidate = current.Substring(0, current.Length - surname.Length - 1);
                 if (catalog.Contains("unit", species, candidate)) given = candidate;
             }
             if (string.IsNullOrEmpty(given)) given = catalog.Next("unit", species, Sex(actor));
             if (string.IsNullOrEmpty(given)) return current;
-            // No family yet: leave the existing full name intact while save data is loading.
-            string value = familyName.Length == 0 && !string.IsNullOrEmpty(SavedGiven(data)) && current.StartsWith(given + " ", StringComparison.Ordinal)
-                ? current : given + (familyName.Length == 0 ? "" : " " + familyName);
-            var setter = AccessTools.Method(actor.GetType(), "setName", new[] { typeof(string), typeof(bool) });
-            var persist = AccessTools.Method(data.GetType(), "set", new[] { typeof(string), typeof(string) });
-            if (setter == null || persist == null) throw new NotSupportedException("Nomes Coerentes: API de persistência do prenome não encontrada.");
+            string value = given + (surname.Length == 0 ? "" : " " + surname);
             correcting = true;
             try
             {
-                persist.Invoke(data, new object[] { "nomescoerentes.given_name", given });
-                if (value != current) setter.Invoke(actor, new object[] { value, true });
-                stamp.Name = value; stamp.Species = species; stamp.FamilyName = familyName;
+                StoreText(data, "nomescoerentes.given_name", given);
+                if (value != current) WriteName(actor, value);
+                stamp.Name = value; stamp.Species = species; stamp.FamilyName = surname;
                 return value;
             }
             finally { correcting = false; }
         }
 
-        private static string SavedGiven(object data)
+        private static string SavedGiven(object data) { return SavedText(data, "nomescoerentes.given_name"); }
+        private static string SavedText(object data, string key)
         {
+            if (data == null) return "";
             var get = AccessTools.Method(data.GetType(), "get", new[] { typeof(string), typeof(string).MakeByRefType(), typeof(string) });
             if (get == null) return "";
-            object[] args = { "nomescoerentes.given_name", "", "" };
+            object[] args = { key, "", "" };
             get.Invoke(data, args);
             return Convert.ToString(args[1]);
+        }
+        private static void StoreText(object data, string key, string value)
+        {
+            var set = AccessTools.Method(data.GetType(), "set", new[] { typeof(string), typeof(string) });
+            if (set == null) throw new NotSupportedException("Nomes Coerentes: API de persistência não encontrada.");
+            set.Invoke(data, new object[] { key, value });
+        }
+        private static void WriteName(object target, string value)
+        {
+            var set = AccessTools.Method(target.GetType(), "setName", new[] { typeof(string), typeof(bool) });
+            if (set == null) throw new NotSupportedException("Nomes Coerentes: setName não encontrado.");
+            bool previous = correcting; correcting = true;
+            try { set.Invoke(target, new object[] { value, true }); }
+            finally { correcting = previous; }
+        }
+
+        private static string Surname(object actor, bool refreshParents, int depth)
+        {
+            object data = Read(actor, "data");
+            if (data == null || depth > 32 || Catalog.Race(Species(actor)) == "other") return "";
+            string saved = SavedText(data, "nomescoerentes.surname");
+            string source = SavedText(data, "nomescoerentes.surname_source");
+            if (saved.Length > 0 && !refreshParents) return saved;
+            string custom = Convert.ToString(Read(data, "name"));
+            if (Convert.ToBoolean(Read(data, "custom_name") ?? false) && custom.IndexOf(' ') > 0)
+            {
+                saved = custom.Substring(custom.IndexOf(' ') + 1).Trim();
+                StoreText(data, "nomescoerentes.surname", saved);
+                StoreText(data, "nomescoerentes.surname_source", "manual");
+                return saved;
+            }
+            if (source == "manual") return saved;
+            var method = actor == null ? null : AccessTools.Method(actor.GetType(), "getParents", Type.EmptyTypes);
+            var sequence = method == null ? null : method.Invoke(actor, null) as System.Collections.IEnumerable;
+            var parents = sequence == null ? new object[0] : sequence.Cast<object>().Where(x => x != null && !ReferenceEquals(x, actor)).OrderBy(x => Sex(x) == "male" ? 0 : 1).ToArray();
+            object parent = parents.FirstOrDefault();
+            // Once paternal inheritance is recorded, a dead father cannot cause a switch to the mother.
+            if (saved.Length > 0 && source == "father") return saved;
+            if (saved.Length > 0 && source == "parent" && (parent == null || Sex(parent) != "male")) return saved;
+            string surname = parent == null ? "" : Surname(parent, false, depth + 1);
+            if (surname.Length > 0) source = Sex(parent) == "male" ? "father" : "parent";
+            else if (saved.Length > 0) return saved;
+            else
+            {
+                object familyData = Read(Read(actor, "family"), "data");
+                surname = SavedText(familyData, "nomescoerentes.house");
+                string nativeName = Convert.ToString(Read(familyData, "name"));
+                if (surname.Length == 0 && catalog.Contains("family", Species(actor), nativeName)) surname = nativeName;
+                if (surname.Length == 0) surname = catalog.Next("family", Species(actor), "none");
+                source = "founder";
+            }
+            StoreText(data, "nomescoerentes.surname", surname);
+            StoreText(data, "nomescoerentes.surname_source", source);
+            return surname;
+        }
+
+        private static void BeforeConquest(object __instance, out object __state)
+        {
+            __state = Read(__instance, "kingdom");
+        }
+        private static void AfterConquest(object __instance, object __state)
+        {
+            try
+            {
+                object winner = Read(__instance, "kingdom");
+                // Use the actual recipient: allied wars can deliver the city to a different kingdom.
+                if (winner == null || ReferenceEquals(winner, __state)) return;
+                object data = Read(winner, "data");
+                if (data == null || Convert.ToBoolean(Read(data, "custom_name") ?? false)) return;
+                string surname = Surname(Read(winner, "king"), false, 0);
+                if (surname.Length == 0) return;
+                StoreText(data, "nomescoerentes.realm_house", surname);
+                WriteName(winner, "Reino da Casa " + surname);
+                // The city name, borders and conquest outcome are entirely vanilla.
+            }
+            catch (Exception error) { UnityEngine.Debug.LogError("Nomes Coerentes: casa conquistadora: " + error); }
+        }
+
+        private static void AfterParentsLinked(object __instance)
+        {
+            try { Surname(__instance, true, 0); CorrectSafely(__instance, "unit", __instance); }
+            catch (Exception error) { UnityEngine.Debug.LogError("Nomes Coerentes: parentesco/sobrenome: " + error); }
         }
 
         private static void AfterActorBirth(object __instance) { CorrectSafely(__instance, "unit", __instance); }
@@ -167,7 +258,28 @@ namespace NomesCoerentes
         }
         private static void AfterMetaCreated(object __instance, object[] __args)
         {
-            CorrectSafely(__instance, __instance.GetType().Name.ToLowerInvariant(), __args.Length > 0 ? __args[0] : null);
+            string category = __instance.GetType().Name.ToLowerInvariant();
+            object founder = __args.Length > 0 ? __args[0] : null;
+            if (category == "family")
+            {
+                object father = __args.FirstOrDefault(x => x != null && x.GetType().Name == "Actor" && Sex(x) == "male");
+                if (father != null) founder = father;
+            }
+            CorrectSafely(__instance, category, founder);
+            if (category == "kingdom" || category == "family")
+            {
+                try
+                {
+                    object data = Read(__instance, "data");
+                    string key = category == "kingdom" ? "nomescoerentes.realm_house" : "nomescoerentes.house";
+                    string surname = SavedText(data, key);
+                    if (surname.Length == 0) surname = Surname(founder, false, 0);
+                    if (surname.Length == 0 || Convert.ToBoolean(Read(data, "custom_name") ?? false)) return;
+                    StoreText(data, key, surname);
+                    WriteName(__instance, category == "kingdom" ? "Reino da Casa " + surname : surname);
+                }
+                catch (Exception error) { UnityEngine.Debug.LogError("Nomes Coerentes: nome da casa fundadora: " + error); }
+            }
         }
         private static string CorrectSafely(object target, string category, object actor)
         {

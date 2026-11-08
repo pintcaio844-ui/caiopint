@@ -1,85 +1,95 @@
-NOMES COERENTES 1.2.0 — PC/Steam + NeoModLoader — versão para teste
+NOMES COERENTES 1.3.0 — PC/Steam + NeoModLoader — versão para teste
 
 ATUALIZAÇÃO
-Feche o jogo. Remova a pasta antiga Mods/NomesCoerentes e extraia a pasta
-NomesCoerentes do novo ZIP para Mods, na raiz da instalação do WorldBox.
-Não mantenha duas versões instaladas. O NML compila Main.cs ao iniciar.
-Ative o modo experimental. Confira a versão 1.2.0 na lista do NML e a mensagem
-"integração central e caminhos diretos instalados".
+Feche o WorldBox. Remova a pasta antiga Mods/NomesCoerentes e extraia a pasta
+NomesCoerentes do ZIP 1.3.0 para Mods, na raiz da instalação do WorldBox.
+Não deixe duas versões do mod instaladas. O NML compila Main.cs ao iniciar.
+Ative o modo experimental e confira a versão 1.3.0 na lista do NML.
 
-SOBRENOMES — NOVIDADE DA 1.2.0
-O nome de cada personagem das quatro raças passa a ser:
-  prenome + nome da família vanilla atual.
-Exemplo: João, da família Tavares, aparece como João Tavares.
-O sobrenome não é sorteado separadamente: usa exatamente o nome da família
-à qual o WorldBox vinculou o personagem. Isso também vale para os filhos
-pertencentes à mesma família. A morte de um personagem não remove o nome
-da família dos demais membros.
-Não altera parentesco, casamentos, clãs, descendência ou regras de herança.
-Se o jogo mudar a família de uma pessoa, o sobrenome acompanha a família atual.
-Se o nome da família mudar, o sobrenome exibido acompanha essa alteração.
-O prenome é guardado nos dados customizados do save para evitar repetir o sobrenome
-ou trocar o prenome após recarregar. Personagens novos sem família ainda aparecem
-só com prenome; o sobrenome é acrescentado quando recebem uma família.
-Durante a carga, nomes completos já salvos são preservados até a família estar disponível.
-Nomes personalizados manualmente pelo jogador são preservados. Animais não recebem
-sobrenomes de famílias humanas. A lista de nomes e as demais funções foram mantidas.
+NOME E SOBRENOME DESDE A CRIAÇÃO
+Humanos, elfos, anões e orcs recebem prenome e sobrenome sorteados das listas.
+Não precisam esperar o jogo criar uma família vanilla para ter sobrenome.
+Os exemplos usados na conversa não são nomes fixos nem combinações obrigatórias.
+O prenome e o sobrenome ficam guardados nos dados customizados do personagem.
+Consultar a ficha novamente não sorteia outro sobrenome nem duplica o que já existe.
+Animais continuam usando as listas anteriores, sem casas dinásticas.
 
-CORREÇÃO DA 1.1.0
-A versão 1.0.0 funcionou apenas nos reinos humanos no teste relatado pelo usuário.
-Esta versão intercepta diretamente Actor.generateNewName (nascimentos/criação),
-Actor.getName (nomes automáticos previamente atribuídos ou carregados),
-Actor.generateName e os eventos de criação de cidades, reinos, culturas, religiões,
-famílias, clãs e idiomas. Modelos de nomes chamados diretamente também são tratados.
-Identifica a raça pelo modelo de nomes e pelo ID, incluindo unit_elf, unit_dwarf,
-prefixos e plurais. Elfos, anões e orcs têm suas próprias listas.
+DESCENDÊNCIA E FAMÍLIAS
+Filhos herdam o sobrenome do pai quando esse vínculo é conhecido; se não houver
+pai disponível, usam o sobrenome do outro genitor conhecido. Se o jogo ainda não
+registrou os pais, o sobrenome provisório é corrigido ao receber esses vínculos.
+Sem genitores conhecidos, o personagem recebe um sobrenome próprio; famílias
+vanilla existentes e com nomes coerentes podem fornecer o sobrenome inicial.
+O sobrenome fica salvo no próprio filho. A morte de um antepassado ou a ausência
+dele depois de recarregar o mundo não exige sortear outro sobrenome.
+Casamentos e mudanças de grupo familiar não trocam o sobrenome já registrado.
+As novas famílias vanilla recebem como nome o sobrenome do seu fundador/genitor
+usado para a casa. Cônjuges podem manter seus próprios sobrenomes de nascimento.
+Não cria relações de parentesco nem muda as regras de reprodução do jogo.
+Para saves anteriores ao patch, se os genitores já morreram e o jogo não possui
+vínculo recuperável, a linhagem antiga exata não pode ser reconstruída: será usada
+uma família disponível ou gerado um sobrenome para iniciar a linhagem do patch.
 
-NOMES REAIS E HISTÓRICOS
-Humanos: nomes reais e históricos de diversas regiões.
-Elfos: nomes celtas, irlandeses, galeses e escoceses.
-Anões: nomes escandinavos e nórdicos.
-Orcs: nomes da Ásia Central, Anatólia e regiões vizinhas.
-As associações são escolhas estéticas para diferenciar as listas no jogo,
-sem atribuir características de espécies fictícias a povos reais.
-Cidades, reinos, culturas e famílias usam referências históricas e geográficas.
-Religiões usam cultos históricos e divindades de mitologias conhecidas.
-Animais usam nomes pessoais e apelidos comuns. Foram retiradas das listas das
-raças as referências a universos de fantasia. Não há mistura de sílabas sem sentido.
-Altera apenas nomes: não muda crenças, atributos, poderes ou comportamento.
+REINOS E CASAS
+Um reino novo recebe o nome "Reino da Casa <sobrenome do fundador>".
+Por exemplo, um fundador de sobrenome Pereira dá origem a Reino da Casa Pereira.
+O exemplo não é fixo: qualquer sobrenome da lista pode ser escolhido.
+Sucessões normais não renomeiam o reino só porque mudou o rei.
+Após uma conquista efetiva de cidade/território, o reino que realmente recebe o
+território passa a usar o sobrenome de seu rei atual. Isso considera também
+transferências para aliados, usando o destinatário real da cidade.
+Assim, uma conquista pode iniciar uma nova casa reinante no reino conquistador.
+Uma captura cancelada ou que não transfere a cidade não muda a casa do reino.
+Se o rei não estiver disponível, o nome dinástico anterior é mantido.
+Reinos novos surgidos por divisões usam o sobrenome de seus próprios fundadores.
+A casa do reino fica gravada no save. Não são criados reinos políticos extras:
+conquistas, fronteiras, anexações e divisões continuam sendo decididos pelo jogo.
+Um reino derrotado que ainda tenha cidades continua existindo conforme o vanilla.
+Reinos antigos já existentes não são renomeados em massa: a regra se aplica à
+fundação de novos reinos e aos próximos eventos de conquista.
 
-MUNDOS EXISTENTES
-Nomes automáticos de personagens fora da lista da raça são corrigidos quando o
-jogo os consulta. Inclui nomes atribuídos por culturas e carregados de um save.
-A correção é gravada nos dados e fica estável nas consultas seguintes.
+CIDADES
+Os nomes das cidades NÃO recebem sobrenomes nem nomes de casas.
+Continuam usando exatamente as listas históricas e geográficas da versão anterior.
+Conquistar uma cidade não muda o nome dela.
+
+PERSONALIZAÇÃO E SAVES
 Nomes marcados pelo jogo como personalizados pelo jogador são preservados.
-Teste primeiro em uma cópia do mundo: as mudanças ficam gravadas no save.
-Cidades e reinos antigos não são renomeados em massa; seus nomes novos são
-aplicados na criação. Um mundo novo permite conferir todas as entidades.
+Um fundador manualmente chamado, por exemplo, "Caio Stark", pode fornecer
+"Stark" como sobrenome da casa sem alterar o nome que o jogador digitou.
+Os nomes automáticos antigos de personagens são adaptados ao consultar suas fichas.
+Teste primeiro em uma cópia do mundo: as mudanças e os metadados ficam no save.
+Nomes completos persistem se o mod for removido; aplicar nomes a novos nascimentos
+ou novos reinos exige manter o mod ativo.
 
-VARIEDADE
-2273 nomes distintos, 5851 entradas em 75 listas (algumas compartilham nomes).
-O sorteio percorre uma lista antes de repetir e não acrescenta números.
-Não há unicidade global; as filas reiniciam ao reabrir o jogo.
-Edite os .txt de Nomes em UTF-8, um nome por linha. Reinicie após editar.
-criaturas.tsv mapeia IDs de criaturas para grupos de nomes.
+LISTAS
+As listas atuais de prenomes, sobrenomes, cidades, culturas, religiões e demais
+nomes foram mantidas. Nome e sobrenome são combinados a partir de entradas completas;
+não há mistura de sílabas sem sentido. Sobrenomes herdados não são sorteados de novo.
+As filas de sorteio reiniciam ao reabrir o jogo; não há unicidade global de sobrenomes.
+Duas linhagens independentes podem ter sobrenomes iguais, como no mundo real.
+Edite os .txt da pasta Nomes em UTF-8, um nome por linha. Reinicie após editar.
 
 TESTE NO JOGO
-Coloque as quatro raças e deixe nascer crianças. Confira adultos, bebês e nomes
-femininos. Abra a mesma pessoa várias vezes: o nome deve permanecer estável.
-Confira o nome da família do personagem: ele deve ser o sobrenome exibido.
-Salve, reabra e confirme que o sobrenome não foi duplicado e o prenome foi mantido.
-Renomeie uma pessoa manualmente: seu nome deve ser preservado.
-Confira cidades, reinos, famílias, culturas, religiões e idiomas de cada raça.
-Teste também uma cópia de um mundo existente, inclusive filhos de culturas antigas.
+1. Crie personagens das quatro raças: todos devem ter prenome e sobrenome.
+2. Espere filhos e netos nascerem e confira a herança do sobrenome.
+3. Salve e reabra; confira os nomes e a ausência de sobrenomes duplicados.
+4. Deixe um fundador morrer e confira a continuidade do sobrenome dos descendentes.
+5. Confira o nome de um reino novo: deve conter o sobrenome do fundador.
+6. Observe uma sucessão normal: o nome dinástico do reino deve permanecer.
+7. Observe uma conquista: confira a casa do rei do reino que recebeu o território.
+8. Confira que as cidades conservaram seus nomes anteriores.
 
 VALIDAÇÃO E LIMITES
-Testes de regressão simulados verificam que os caminhos diretos entregam nomes
-da lista da raça correta, mesmo ignorando completamente o gerador central.
-Incluem nomes previamente atribuídos, nomes femininos, estabilidade e nomes manuais.
-A referência de API é WorldBox 0.51.2/build 719 e a DLL pública do projeto NML.
-Não foi executado no Unity/WorldBox real neste ambiente. A validação dentro do
-jogo continua necessária. Outros mods de nomes podem interferir.
-Se falhar, envie o erro do NML e a versão/build exata do WorldBox.
+Regressões simuladas passaram nas quatro raças: fundadores sem família, três
+gerações, vínculos parentais registrados depois do nascimento, recarga sem os
+objetos dos genitores, persistência, nomes manuais, reinos e conquistas.
+Incluem destinatário aliado, captura cancelada e nomes de cidades preservados.
+A API e a persistência foram inspecionadas na DLL pública do projeto NML;
+a referência documental de versão é WorldBox 0.51.2/build 719.
+Não foi executado no Unity/WorldBox real neste ambiente. A validação dentro do jogo
+continua necessária, especialmente com outros mods que alteram nomes.
+Se houver falha, envie o erro do NML, a versão/build exata e o evento que falhou.
 
-Referências: github.com/WorldBoxOpenMods/ModLoader e
+Referências técnicas: github.com/WorldBoxOpenMods/ModLoader e
 lous12.github.io/worldbox-modding-docs/

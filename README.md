@@ -1,4 +1,4 @@
-> **Nomes Coerentes 1.2.0 — sobrenomes das famílias vanilla** — nomes reais, históricos e mitológicos para pessoas, criaturas, cidades, reinos, religiões, culturas e famílias. [Baixar ZIP para testar](Downloads/NomesCoerentes-1.2.0.zip?raw=true) · [Instalação e limites](NomesCoerentes/LEIA-ME.txt). Altera só nomes; ainda requer teste dentro do WorldBox.
+> **Nomes Coerentes 1.3.0 — sobrenomes herdados e reinos dinásticos** — nomes reais, históricos e mitológicos para pessoas, criaturas, cidades, reinos, religiões, culturas e famílias. [Baixar ZIP para testar](Downloads/NomesCoerentes-1.3.0.zip?raw=true) · [Instalação e limites](NomesCoerentes/LEIA-ME.txt). Altera só nomes; ainda requer teste dentro do WorldBox.
 
 # Livro do Mundo — Cronista do Mundo
 

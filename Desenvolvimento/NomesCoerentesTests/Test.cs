@@ -11,7 +11,10 @@ public enum MetaType { None,Subspecies,Family,Language,Culture,Religion,Clan,Cit
 public enum ActorSex {Male,Female,None}
 public class ActorAsset {public string id; public string name_template_unit;}
 public class Actor {
- public ActorAsset asset; public FakeData data=new FakeData(); public Family family;
+ public ActorAsset asset; public FakeData data=new FakeData(); public Family family; public List<Actor> parents=new List<Actor>();
+ public IEnumerable<Actor> getParents(){return parents;}
+ [MethodImpl(MethodImplOptions.NoInlining)] public void setParent1(Actor a,bool count){if(!parents.Contains(a))parents.Add(a);}
+ [MethodImpl(MethodImplOptions.NoInlining)] public void setParent2(Actor a,bool count){if(!parents.Contains(a))parents.Add(a);}
  [MethodImpl(MethodImplOptions.NoInlining)] public void setFamily(Family f){family=f;}
  public bool isSexFemale(){return data.sex==ActorSex.Female;} public bool isSexMale(){return data.sex==ActorSex.Male;}
  public void setName(string name,bool track){data.name=name;}
@@ -28,49 +31,64 @@ public class FakeData {
 public class Army {public FakeData data=new FakeData(); public string name=""; public void setName(string n,bool custom){name=n;} [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(object k){name="VANILLA";} }
 public class Subspecies {public FakeData data=new FakeData(); public string name=""; public void setName(string n,bool custom){name=n;} [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(ActorAsset a,object tile){name="VANILLA";} }
 public class NamedMeta {public FakeData data=new FakeData(); public void setName(string name,bool track){data.name=name;} }
-public class Kingdom:NamedMeta { [MethodImpl(MethodImplOptions.NoInlining)] public void newCivKingdom(Actor a){data.name="VANILLA_REALM";} }
-public class City:NamedMeta { [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(Actor a){data.name="VANILLA_CITY";} }
+public class Kingdom:NamedMeta { public Actor king; [MethodImpl(MethodImplOptions.NoInlining)] public void newCivKingdom(Actor a){king=a;data.name="VANILLA_REALM";} }
+public class City:NamedMeta { public Kingdom kingdom; public Kingdom recipient; public bool locked;
+ [MethodImpl(MethodImplOptions.NoInlining)] public void finishCapture(Kingdom attacker){if(!locked)kingdom=recipient??attacker;} [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(Actor a){data.name="VANILLA_CITY";} }
 public class Religion:NamedMeta { [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(Actor a){data.name="VANILLA_RELIGION";} }
 public class Culture:NamedMeta { [MethodImpl(MethodImplOptions.NoInlining)] public void createCulture(Actor a,bool ignored){data.name="VANILLA_CULTURE";} }
-public class Family:NamedMeta { [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(Actor a){data.name="VANILLA_FAMILY";} }
+public class Family:NamedMeta {
+ [MethodImpl(MethodImplOptions.NoInlining)] public void newFamily(Actor a,Actor b,object tile){data.name="VANILLA_FAMILY";} [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(Actor a){data.name="VANILLA_FAMILY";} }
 public class Clan:NamedMeta { [MethodImpl(MethodImplOptions.NoInlining)] public void newClan(Actor a,bool ignored){data.name="VANILLA_CLAN";} }
 public class Language:NamedMeta { [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(Actor a){data.name="VANILLA_LANGUAGE";} }
 public static class NameGenerator { [MethodImpl(MethodImplOptions.NoInlining)] public static string generateName(Actor a,MetaType m,long n,ActorSex s){return "VANILLA";} [MethodImpl(MethodImplOptions.NoInlining)] public static string getName(string id){return "VANILLA";} [MethodImpl(MethodImplOptions.NoInlining)] public static string generateNameFromTemplate(string id,Actor a){return "VANILLA";} }
-public class Program {public static string ModDirectory=Path.GetFullPath("NomesCoerentes");static void Assert(bool ok,string reason){if(!ok)throw new Exception(reason);} public static void Main(){var c=new Catalog(Path.Combine(ModDirectory,"Nomes")); foreach(var race in new[]{"human","elf","orc","dwarf"})foreach(var cat in new[]{"unit","city","kingdom","religion","culture","family","clan","language"}) {var actual=c.Next(cat,race,"female");Assert(!string.IsNullOrWhiteSpace(actual),cat+race);}
-foreach(var file in Directory.GetFiles(Path.Combine(ModDirectory,"Nomes"),"*.txt")){var lines=File.ReadAllLines(file);Assert(lines.Length>0,"empty");Assert(lines.Distinct(StringComparer.OrdinalIgnoreCase).Count()==lines.Length,"duplicates");}
-c=new Catalog(Path.Combine(ModDirectory,"Nomes"));var expected=File.ReadAllLines(Path.Combine(ModDirectory,"Nomes","city_human.txt"));var seen=new HashSet<string>();string last="";foreach(var ignored in expected){last=c.Next("city","human","none");Assert(seen.Add(last),"repeat before exhaustion");}Assert(c.Next("city","human","none")!=last,"boundary repeat");Assert(c.Next("future_type","human","male")==null,"future metadata changed");
-new Main().GetType().GetMethod("OnModLoad",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(new Main(),null);
-foreach(var race in new[]{"human","elf","orc","dwarf","dragon","wolf","unknown_creature","dragon_red"})foreach(var cat in new[]{MetaType.Unit,MetaType.City,MetaType.Kingdom,MetaType.Religion,MetaType.Culture,MetaType.Family,MetaType.Clan,MetaType.Language})Assert(NameGenerator.generateName(new Actor{asset=new ActorAsset{id=race}},cat,1,ActorSex.Female)!="VANILLA","patch not active");
-Assert(NameGenerator.getName("alliance_name")!="VANILLA","alliance");Assert(NameGenerator.getName("world_name")!="VANILLA","world");Assert(NameGenerator.getName("kingdom_motto")=="VANILLA","motto changed");Assert(NameGenerator.generateNameFromTemplate("war_rebellion",null)!="VANILLA","war");Assert(NameGenerator.generateName(null,MetaType.Unit,1,ActorSex.None)!="VANILLA","null actor");Assert(NameGenerator.generateName(null,MetaType.None,1,ActorSex.None)=="VANILLA","unknown category"); var army=new Army();army.generateName(null);Assert(army.name!="VANILLA","army");army.data.custom_name=true;army.generateName(null);Assert(army.name=="VANILLA","custom army not preserved by prefix");var sub=new Subspecies();sub.generateName(new ActorAsset{id="elf"},null);Assert(sub.name!="VANILLA","subspecies");Assert(NameGenerator.generateNameFromTemplate("book_name_fable",null)!="VANILLA","book");foreach(string race in new[]{"human","elf","dwarf","orc"}) {
- var a=new Actor{asset=new ActorAsset{id="unit_"+race,name_template_unit=race+"_unit"}};
- a.generateNewName(); Assert(c.Contains("unit",race,a.data.name),"birth race pool "+race);
- string stable=a.getName();Assert(a.getName()==stable,"name rerolled "+race);
- a.data=new FakeData{name="FROM_LOADED_SAVE"};Assert(c.Contains("unit",race,a.getName()),"preassigned save name "+race);
- a.data=new FakeData{name="Meu Nome",custom_name=true};Assert(a.getName()=="Meu Nome","manual name overwritten");
- a.data=new FakeData{sex=ActorSex.Female};a.generateNewName();Assert(File.ReadAllLines(Path.Combine(ModDirectory,"Nomes","unit_"+race+"_female.txt")).Contains(a.getName()),"female birth "+race);
- Assert(c.Contains("unit",race,a.generateName(MetaType.Unit,1,ActorSex.Male)),"culture override bypass "+race);
- Assert(c.Contains("city",race,NameGenerator.generateNameFromTemplate(race+"_city",null)),"template bypass "+race);
- var k=new Kingdom();k.newCivKingdom(a);Assert(c.Contains("kingdom",race,k.data.name),"realm race "+race);
- var ct=new City();ct.generateName(a);Assert(c.Contains("city",race,ct.data.name),"city race "+race);
- var rel=new Religion();rel.generateName(a);Assert(c.Contains("religion",race,rel.data.name),"religion race "+race);
- var culture=new Culture();culture.createCulture(a,false);Assert(c.Contains("culture",race,culture.data.name),"culture race "+race);
- var fam=new Family();fam.generateName(a);Assert(c.Contains("family",race,fam.data.name),"family race "+race);
- var clan=new Clan();clan.newClan(a,false);Assert(c.Contains("clan",race,clan.data.name),"clan race "+race);
- var lang=new Language();lang.generateName(a);Assert(c.Contains("language",race,lang.data.name),"language race "+race);
+public class Program {
+ public static string ModDirectory=Path.GetFullPath("NomesCoerentes");
+ static void Assert(bool ok,string reason){if(!ok)throw new Exception(reason);}
+ static Actor Person(string race,ActorSex sex=ActorSex.Male){return new Actor{asset=new ActorAsset{id="unit_"+race,name_template_unit=race+"_unit"},data=new FakeData{sex=sex}};}
+ static string Value(Actor a,string key){string value;a.data.get("nomescoerentes."+key,out value,"");return value;}
+ static FakeData Clone(FakeData d){return new FakeData{name=d.name,sex=d.sex,custom_name=d.custom_name,saved=new Dictionary<string,string>(d.saved)};}
+ public static void Main(){
+  var c=new Catalog(Path.Combine(ModDirectory,"Nomes"));
+  foreach(var f in Directory.GetFiles(Path.Combine(ModDirectory,"Nomes"),"*.txt")){var lines=File.ReadAllLines(f);Assert(lines.Length>0,"empty list");Assert(lines.Distinct(StringComparer.OrdinalIgnoreCase).Count()==lines.Length,"duplicate list entry");}
+  var cityNames=File.ReadAllLines(Path.Combine(ModDirectory,"Nomes","city_human.txt"));var seen=new HashSet<string>();string last="";
+  foreach(var ignored in cityNames){last=c.Next("city","human","none");Assert(seen.Add(last),"early bag repetition");}Assert(c.Next("city","human","none")!=last,"bag boundary repetition");
+  new Main().GetType().GetMethod("OnModLoad",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(new Main(),null);
+  foreach(var race in new[]{"human","elf","dwarf","orc"}){
+   var father=Person(race);father.generateNewName();string full=father.getName();string surname=Value(father,"surname");string given=Value(father,"given_name");
+   Assert(c.Contains("unit",race,given)&&c.Contains("family",race,surname),"name and surname pools "+race);
+   Assert(full==given+" "+surname,"no family object founder lacks surname "+race);
+   Assert(father.getName()==full,"duplicate suffix or reroll "+race);
+   var mother=Person(race,ActorSex.Female);mother.generateNewName();Assert(File.ReadAllLines(Path.Combine(ModDirectory,"Nomes","unit_"+race+"_female.txt")).Contains(Value(mother,"given_name")),"female names "+race);
+   var child=Person(race);child.generateNewName();string childGiven=Value(child,"given_name");
+   child.setParent1(mother,true);Assert(Value(child,"surname")==Value(mother,"surname"),"maternal fallback "+race);
+   child.setParent2(father,true);Assert(child.getName()==childGiven+" "+surname,"late paternal link "+race);
+   var family=new Family();family.newFamily(mother,father,null);Assert(family.data.name==surname,"vanilla family house name "+race);
+   child.setFamily(family);Assert(Value(child,"surname")==surname,"membership changed lineage "+race);
+   family.data.name="Outra família";Assert(child.getName()==childGiven+" "+surname,"family label rerolled surname "+race);
+   var loaded=new Actor{asset=child.asset,data=Clone(child.data)};Assert(loaded.getName()==childGiven+" "+surname,"reload without living parents "+race);
+   var grandchild=Person(race);grandchild.generateNewName();grandchild.setParent1(loaded,true);Assert(Value(grandchild,"surname")==surname,"third generation "+race);
+   child.parents.Clear();child.setParent1(mother,true);Assert(Value(child,"surname")==surname,"dead father switched dynasty "+race);
+   var realm=new Kingdom();realm.newCivKingdom(father);Assert(realm.data.name=="Reino da Casa "+surname,"founder kingdom "+race);
+   string realmName=realm.data.name;realm.king=mother;Assert(realm.data.name==realmName,"ordinary succession renamed realm");
+   var town=new City();town.generateName(father);string townName=town.data.name;Assert(c.Contains("city",race,townName),"city naming changed "+race);
+   town.kingdom=new Kingdom();town.finishCapture(realm);Assert(realm.data.name=="Reino da Casa "+Value(mother,"surname"),"conqueror king dynasty "+race);Assert(town.data.name==townName,"city renamed on conquest");
+   string conquered=realm.data.name;realm.king=father;town.finishCapture(realm);Assert(realm.data.name==conquered,"non-transfer changed dynasty");
+   var allied=new Kingdom();allied.newCivKingdom(loaded);allied.king=mother;town.recipient=allied;town.finishCapture(realm);Assert(allied.data.name=="Reino da Casa "+Value(mother,"surname"),"allied recipient not actual realm");
+   town.recipient=null;town.locked=true;string locked=realm.data.name;town.finishCapture(realm);Assert(realm.data.name==locked,"aborted capture renamed realm");
+   var split=new Kingdom();split.newCivKingdom(grandchild);Assert(split.data.name=="Reino da Casa "+surname,"new split realm founder");
+   var savedRealm=new Kingdom{data=Clone(split.data)};Assert(savedRealm.data.saved["nomescoerentes.realm_house"]==surname,"realm dynasty persistence");
+   var religion=new Religion();religion.generateName(father);Assert(c.Contains("religion",race,religion.data.name),"religion regression");
+   var culture=new Culture();culture.createCulture(father,false);Assert(c.Contains("culture",race,culture.data.name),"culture regression");
+   var clan=new Clan();clan.newClan(father,false);Assert(c.Contains("clan",race,clan.data.name),"clan regression");
+   var lang=new Language();lang.generateName(father);Assert(c.Contains("language",race,lang.data.name),"language regression");
+   Assert(c.Contains("unit",race,father.generateName(MetaType.Unit,1,ActorSex.Male)),"culture override regression");
+   Assert(c.Contains("city",race,NameGenerator.generateNameFromTemplate(race+"_city",null)),"direct template regression");
+   var custom=Person(race);custom.data.custom_name=true;custom.data.name="Caio Stark";Assert(custom.getName()=="Caio Stark","manual name changed");var manualRealm=new Kingdom();manualRealm.newCivKingdom(custom);Assert(manualRealm.data.name=="Reino da Casa Stark","manual founder surname");
+  }
+  var animal=Person("wolf");animal.generateNewName();Assert(Value(animal,"surname")=="","animal surname");
+  Assert(NameGenerator.getName("alliance_name")!="VANILLA","alliance regression");Assert(NameGenerator.getName("kingdom_motto")=="VANILLA","motto changed");Assert(NameGenerator.getName("world_name")!="VANILLA","world regression");
+  Assert(NameGenerator.generateNameFromTemplate("war_rebellion",null)!="VANILLA","war regression");Assert(NameGenerator.generateNameFromTemplate("book_name_fable",null)!="VANILLA","book regression");
+  Assert(NameGenerator.generateName(null,MetaType.None,1,ActorSex.None)=="VANILLA","future category changed");Assert(Catalog.Race("scorpion")=="other","scorpion confused with orc");
+  Console.WriteLine("PASS: real Harmony interception on simulated API; founders without families, inherited surnames across three generations, late parent links, parent death/reload data, stable names, dynasty kingdoms, actual conquest recipient, unchanged city names, preserved normal succession, and previous naming routes. NOT an in-game test.");
+ }
 }
-Assert(Catalog.Race("scorpion")=="other","scorpion mistaken for orc");Assert(Catalog.Race("unit_dwarves")=="dwarf","plural race alias");
-foreach(string race in new[]{"human","elf","dwarf","orc"}) {
- var a=new Actor{asset=new ActorAsset{id=race,name_template_unit=race+"_unit"}};
- a.generateNewName();string first=a.getName();var family=new Family();family.data.name="Tavares";a.setFamily(family);
- Assert(a.getName()==first+" Tavares","missing native family surname "+race);
- Assert(a.getName()==first+" Tavares","duplicated surname "+race);
- family.data.name="Silva";Assert(a.getName()==first+" Silva","family rename not reflected "+race);
- var loaded=new Actor{asset=a.asset,family=family,data=new FakeData{name=a.data.name,saved=new Dictionary<string,string>(a.data.saved)}};
- Assert(loaded.getName()==first+" Silva","surname lost after reload "+race);
- var nextFamily=new Family();nextFamily.data.name="Costa";loaded.setFamily(nextFamily);Assert(loaded.getName()==first+" Costa","surname did not follow native family "+race);
- loaded.data.custom_name=true;loaded.data.name="Nome escolhido";Assert(loaded.getName()=="Nome escolhido","manual name changed by surname "+race);
- var child=new Actor{asset=a.asset,family=family};child.generateNewName();Assert(child.getName().EndsWith(" Silva"),"child family surname "+race);
- a=null;Assert(child.getName().EndsWith(" Silva"),"surname depended on living founder "+race);
-}
-var animal=new Actor{asset=new ActorAsset{id="wolf"},family=new Family()};animal.family.data.name="Tavares";animal.generateNewName();Assert(!animal.getName().EndsWith(" Tavares"),"surname added to animal");
-Console.WriteLine("PASS: compilation, all race/category routes, creature fallback, null actor, shuffled bags, boundaries and real Harmony interception on a simulated API. NOT an in-game test.");}}

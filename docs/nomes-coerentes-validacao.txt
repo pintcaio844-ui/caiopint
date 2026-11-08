@@ -1,22 +1,24 @@
-Nomes Coerentes 1.1.0
+Nomes Coerentes 1.3.0 — validação fora do jogo
 
-Teste real da 1.0.0 relatado pelo usuário: nomes coerentes apenas em reinos humanos.
-Os testes centrais antigos não demonstravam cobertura dos caminhos de personagens.
+A 1.3.0 substitui a associação de sobrenome à família atual da 1.2.0 por sobrenome
+persistente desde a criação, herdado pelos vínculos de genitores do vanilla.
+Reinos recebem a casa fundadora; conquista efetiva atualiza a casa do reino
+que recebeu a cidade para o sobrenome do seu rei. Cidades não são renomeadas.
 
-Novas regressões ignoram deliberadamente o gerador central nos caminhos diretos:
-nascimento, leitura de nome, Actor.generateName e criação de metas.
-Verificam pertencimento às listas corretas de humanos, elfos, anões e orcs para
-pessoas, cidades, reinos, culturas, religiões, famílias, clãs e idiomas.
-Incluem dados previamente atribuídos/carregados, nomes femininos, estabilidade,
-nomes personalizados, aliases unit_elf/unit_dwarf e plurais.
+Testes: código Main.cs real com Harmony 2.4.2 em API simulada, .NET 8.
+Quatro raças: prenome/sobrenome nas listas corretas sem família, estabilidade,
+filhos e netos, vínculos parentais tardios, recarga de metadados sem os genitores,
+retenção da herança paterna após ausência do pai, nomes manuais, família vanilla,
+reino fundador, sucessão normal, novo reino derivado, conquista e destinatário aliado,
+captura cancelada, ausência de transferência, preservação dos nomes das cidades,
+regressões das rotas de culturas/religiões/clãs/idiomas e geradores anteriores.
 
-Compilação e interceptações Harmony em API simulada, .NET 8/Harmony 2.4.2.
-Assinaturas e parâmetro pTrack de NanoObject.setName inspecionados estaticamente
-na referência pública do NML. Não foi executado no Unity/WorldBox real.
+Actor.family, getParents, setParent1, setParent2 e setFamily; Family.newFamily;
+Kingdom.newCivKingdom, Kingdom.king; City.finishCapture e City.kingdom inspecionados
+na DLL pública de referência do NML. O parâmetro de finishCapture pode diferir
+do destinatário final: a implementação consulta city.kingdom após a captura.
+BaseSystemData.get(string,out string,string) e set(string,string) são usados
+para persistir prenome, sobrenome, origem da herança e casa do reino.
 
-1.2.0: sobrenome é exatamente Family.data.name, sem novas regras de herança.
-Campos Actor.family e Family.data, BaseSystemData.get(string,out string,string)
-e set(string,string) conferidos na DLL pública do NML. Prenome persistido no save.
-Testes simulados de família, filhos, recarga, mudança de família, estabilidade,
-nomes personalizados e animais adicionados nas quatro raças.
-Não executado dentro do WorldBox real.
+Não foi executado no jogo real. A morte, serialização e carga do WorldBox foram
+representadas por dados simulados; o teste real desses eventos continua pendente.

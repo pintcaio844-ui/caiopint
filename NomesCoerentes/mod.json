@@ -2,8 +2,8 @@
   "name": "Nomes Coerentes",
   "author": "pintcaio844-ui",
   "GUID": "bruno.worldbox.nomescoerentes",
-  "version": "1.2.0",
-  "description": "Nomes coerentes nas quatro raças. Personagens exibem prenome + nome da sua família vanilla, com prenome persistente no save.",
+  "version": "1.3.0",
+  "description": "Nome e sobrenome desde a criação, linhagens persistentes e reinos com o nome da casa fundadora ou conquistadora. Cidades mantêm as listas existentes.",
   "Dependencies": [],
   "OptionalDependencies": [],
   "IncompatibleWith": []
