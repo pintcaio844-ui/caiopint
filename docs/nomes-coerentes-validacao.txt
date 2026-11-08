@@ -13,3 +13,10 @@ nomes personalizados, aliases unit_elf/unit_dwarf e plurais.
 Compilação e interceptações Harmony em API simulada, .NET 8/Harmony 2.4.2.
 Assinaturas e parâmetro pTrack de NanoObject.setName inspecionados estaticamente
 na referência pública do NML. Não foi executado no Unity/WorldBox real.
+
+1.2.0: sobrenome é exatamente Family.data.name, sem novas regras de herança.
+Campos Actor.family e Family.data, BaseSystemData.get(string,out string,string)
+e set(string,string) conferidos na DLL pública do NML. Prenome persistido no save.
+Testes simulados de família, filhos, recarga, mudança de família, estabilidade,
+nomes personalizados e animais adicionados nas quatro raças.
+Não executado dentro do WorldBox real.

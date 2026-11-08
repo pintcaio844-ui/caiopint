@@ -1,13 +1,31 @@
-NOMES COERENTES 1.1.0 — PC/Steam + NeoModLoader — versão para teste
+NOMES COERENTES 1.2.0 — PC/Steam + NeoModLoader — versão para teste
 
 ATUALIZAÇÃO
 Feche o jogo. Remova a pasta antiga Mods/NomesCoerentes e extraia a pasta
 NomesCoerentes do novo ZIP para Mods, na raiz da instalação do WorldBox.
 Não mantenha duas versões instaladas. O NML compila Main.cs ao iniciar.
-Ative o modo experimental. Confira a versão 1.1.0 na lista do NML e a mensagem
+Ative o modo experimental. Confira a versão 1.2.0 na lista do NML e a mensagem
 "integração central e caminhos diretos instalados".
 
-CORREÇÃO
+SOBRENOMES — NOVIDADE DA 1.2.0
+O nome de cada personagem das quatro raças passa a ser:
+  prenome + nome da família vanilla atual.
+Exemplo: João, da família Tavares, aparece como João Tavares.
+O sobrenome não é sorteado separadamente: usa exatamente o nome da família
+à qual o WorldBox vinculou o personagem. Isso também vale para os filhos
+pertencentes à mesma família. A morte de um personagem não remove o nome
+da família dos demais membros.
+Não altera parentesco, casamentos, clãs, descendência ou regras de herança.
+Se o jogo mudar a família de uma pessoa, o sobrenome acompanha a família atual.
+Se o nome da família mudar, o sobrenome exibido acompanha essa alteração.
+O prenome é guardado nos dados customizados do save para evitar repetir o sobrenome
+ou trocar o prenome após recarregar. Personagens novos sem família ainda aparecem
+só com prenome; o sobrenome é acrescentado quando recebem uma família.
+Durante a carga, nomes completos já salvos são preservados até a família estar disponível.
+Nomes personalizados manualmente pelo jogador são preservados. Animais não recebem
+sobrenomes de famílias humanas. A lista de nomes e as demais funções foram mantidas.
+
+CORREÇÃO DA 1.1.0
 A versão 1.0.0 funcionou apenas nos reinos humanos no teste relatado pelo usuário.
 Esta versão intercepta diretamente Actor.generateNewName (nascimentos/criação),
 Actor.getName (nomes automáticos previamente atribuídos ou carregados),
@@ -48,6 +66,8 @@ criaturas.tsv mapeia IDs de criaturas para grupos de nomes.
 TESTE NO JOGO
 Coloque as quatro raças e deixe nascer crianças. Confira adultos, bebês e nomes
 femininos. Abra a mesma pessoa várias vezes: o nome deve permanecer estável.
+Confira o nome da família do personagem: ele deve ser o sobrenome exibido.
+Salve, reabra e confirme que o sobrenome não foi duplicado e o prenome foi mantido.
 Renomeie uma pessoa manualmente: seu nome deve ser preservado.
 Confira cidades, reinos, famílias, culturas, religiões e idiomas de cada raça.
 Teste também uma cópia de um mundo existente, inclusive filhos de culturas antigas.

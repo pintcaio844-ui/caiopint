@@ -11,14 +11,20 @@ public enum MetaType { None,Subspecies,Family,Language,Culture,Religion,Clan,Cit
 public enum ActorSex {Male,Female,None}
 public class ActorAsset {public string id; public string name_template_unit;}
 public class Actor {
- public ActorAsset asset; public FakeData data=new FakeData();
+ public ActorAsset asset; public FakeData data=new FakeData(); public Family family;
+ [MethodImpl(MethodImplOptions.NoInlining)] public void setFamily(Family f){family=f;}
  public bool isSexFemale(){return data.sex==ActorSex.Female;} public bool isSexMale(){return data.sex==ActorSex.Male;}
  public void setName(string name,bool track){data.name=name;}
  [MethodImpl(MethodImplOptions.NoInlining)] public void generateNewName(){data.name="VANILLA_CHILD";}
  [MethodImpl(MethodImplOptions.NoInlining)] public string getName(){return data.name;}
  [MethodImpl(MethodImplOptions.NoInlining)] public string generateName(MetaType type,long seed,ActorSex sex){return "VANILLA_CULTURE_OVERRIDE";}
 }
-public class FakeData { public bool custom_name; public string name="VANILLA"; public ActorSex sex; }
+public class FakeData {
+ public bool custom_name; public string name="VANILLA"; public ActorSex sex;
+ public Dictionary<string,string> saved=new Dictionary<string,string>();
+ public string set(string key,string value){saved[key]=value;return value;}
+ public void get(string key,out string value,string fallback){if(!saved.TryGetValue(key,out value))value=fallback;}
+}
 public class Army {public FakeData data=new FakeData(); public string name=""; public void setName(string n,bool custom){name=n;} [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(object k){name="VANILLA";} }
 public class Subspecies {public FakeData data=new FakeData(); public string name=""; public void setName(string n,bool custom){name=n;} [MethodImpl(MethodImplOptions.NoInlining)] public void generateName(ActorAsset a,object tile){name="VANILLA";} }
 public class NamedMeta {public FakeData data=new FakeData(); public void setName(string name,bool track){data.name=name;} }
@@ -53,4 +59,18 @@ Assert(NameGenerator.getName("alliance_name")!="VANILLA","alliance");Assert(Name
  var lang=new Language();lang.generateName(a);Assert(c.Contains("language",race,lang.data.name),"language race "+race);
 }
 Assert(Catalog.Race("scorpion")=="other","scorpion mistaken for orc");Assert(Catalog.Race("unit_dwarves")=="dwarf","plural race alias");
+foreach(string race in new[]{"human","elf","dwarf","orc"}) {
+ var a=new Actor{asset=new ActorAsset{id=race,name_template_unit=race+"_unit"}};
+ a.generateNewName();string first=a.getName();var family=new Family();family.data.name="Tavares";a.setFamily(family);
+ Assert(a.getName()==first+" Tavares","missing native family surname "+race);
+ Assert(a.getName()==first+" Tavares","duplicated surname "+race);
+ family.data.name="Silva";Assert(a.getName()==first+" Silva","family rename not reflected "+race);
+ var loaded=new Actor{asset=a.asset,family=family,data=new FakeData{name=a.data.name,saved=new Dictionary<string,string>(a.data.saved)}};
+ Assert(loaded.getName()==first+" Silva","surname lost after reload "+race);
+ var nextFamily=new Family();nextFamily.data.name="Costa";loaded.setFamily(nextFamily);Assert(loaded.getName()==first+" Costa","surname did not follow native family "+race);
+ loaded.data.custom_name=true;loaded.data.name="Nome escolhido";Assert(loaded.getName()=="Nome escolhido","manual name changed by surname "+race);
+ var child=new Actor{asset=a.asset,family=family};child.generateNewName();Assert(child.getName().EndsWith(" Silva"),"child family surname "+race);
+ a=null;Assert(child.getName().EndsWith(" Silva"),"surname depended on living founder "+race);
+}
+var animal=new Actor{asset=new ActorAsset{id="wolf"},family=new Family()};animal.family.data.name="Tavares";animal.generateNewName();Assert(!animal.getName().EndsWith(" Tavares"),"surname added to animal");
 Console.WriteLine("PASS: compilation, all race/category routes, creature fallback, null actor, shuffled bags, boundaries and real Harmony interception on a simulated API. NOT an in-game test.");}}

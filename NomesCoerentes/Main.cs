@@ -15,7 +15,7 @@ namespace NomesCoerentes
         private static bool warned;
         [ThreadStatic] private static bool correcting;
         private static readonly ConditionalWeakTable<object, NameStamp> checkedNames = new ConditionalWeakTable<object, NameStamp>();
-        private sealed class NameStamp { public string Name; public string Species; }
+        private sealed class NameStamp { public string Name; public string Species; public string FamilyName; }
         protected override void OnModLoad()
         {
             catalog = new Catalog(Path.Combine(GetDeclaration().FolderPath, "Nomes"));
@@ -52,6 +52,7 @@ namespace NomesCoerentes
             // Explicit lifecycle hooks cover culture/onomastics and preassigned names.
             PatchPostfix(harmony, actor, "generateNewName", "AfterActorBirth");
             PatchPostfix(harmony, actor, "getName", "AfterActorRead");
+            PatchPostfix(harmony, actor, "setFamily", "AfterActorBirth");
             PatchPostfix(harmony, actor, "generateName", "AfterActorGenerated");
             foreach (var pair in new[] { "City:generateName", "Kingdom:newCivKingdom", "Culture:createCulture", "Clan:newClan", "Family:generateName", "Religion:generateName", "Language:generateName" })
             {
@@ -90,9 +91,12 @@ namespace NomesCoerentes
             string species = Species(actor);
             string current = Convert.ToString(Read(data, "name"));
             NameStamp stamp = checkedNames.GetValue(data, key => new NameStamp());
-            if (stamp.Name == current && stamp.Species == species) return current;
+            bool person = category == "unit" && Catalog.Race(species) != "other";
+            string familyName = person ? Convert.ToString(Read(Read(Read(actor, "family"), "data"), "name")).Trim() : "";
+            if (stamp.Name == current && stamp.Species == species && stamp.FamilyName == familyName) return current;
+            if (person) return PersonalName(target, data, species, current, familyName, stamp);
             if (catalog.Contains(category, species, current))
-            { stamp.Name = current; stamp.Species = species; return current; }
+            { stamp.Name = current; stamp.Species = species; stamp.FamilyName = familyName; return current; }
             var setter = AccessTools.Method(target.GetType(), "setName", new[] { typeof(string), typeof(bool) });
             if (setter == null) return null;
             correcting = true;
@@ -102,10 +106,47 @@ namespace NomesCoerentes
                 if (value == null) return null;
                 // The second argument is pTrack, NOT a custom-name flag.
                 setter.Invoke(target, new object[] { value, true });
-                stamp.Name = value; stamp.Species = species;
+                stamp.Name = value; stamp.Species = species; stamp.FamilyName = familyName;
                 return value;
             }
             finally { correcting = false; }
+        }
+
+        // The surname is exactly the current vanilla Family name. No inheritance rules change.
+        private static string PersonalName(object actor, object data, string species, string current, string familyName, NameStamp stamp)
+        {
+            string given = catalog.Contains("unit", species, current) ? current : SavedGiven(data);
+            if (string.IsNullOrEmpty(given) && familyName.Length > 0 && current.EndsWith(" " + familyName, StringComparison.Ordinal))
+            {
+                string candidate = current.Substring(0, current.Length - familyName.Length - 1);
+                if (catalog.Contains("unit", species, candidate)) given = candidate;
+            }
+            if (string.IsNullOrEmpty(given)) given = catalog.Next("unit", species, Sex(actor));
+            if (string.IsNullOrEmpty(given)) return current;
+            // No family yet: leave the existing full name intact while save data is loading.
+            string value = familyName.Length == 0 && !string.IsNullOrEmpty(SavedGiven(data)) && current.StartsWith(given + " ", StringComparison.Ordinal)
+                ? current : given + (familyName.Length == 0 ? "" : " " + familyName);
+            var setter = AccessTools.Method(actor.GetType(), "setName", new[] { typeof(string), typeof(bool) });
+            var persist = AccessTools.Method(data.GetType(), "set", new[] { typeof(string), typeof(string) });
+            if (setter == null || persist == null) throw new NotSupportedException("Nomes Coerentes: API de persistência do prenome não encontrada.");
+            correcting = true;
+            try
+            {
+                persist.Invoke(data, new object[] { "nomescoerentes.given_name", given });
+                if (value != current) setter.Invoke(actor, new object[] { value, true });
+                stamp.Name = value; stamp.Species = species; stamp.FamilyName = familyName;
+                return value;
+            }
+            finally { correcting = false; }
+        }
+
+        private static string SavedGiven(object data)
+        {
+            var get = AccessTools.Method(data.GetType(), "get", new[] { typeof(string), typeof(string).MakeByRefType(), typeof(string) });
+            if (get == null) return "";
+            object[] args = { "nomescoerentes.given_name", "", "" };
+            get.Invoke(data, args);
+            return Convert.ToString(args[1]);
         }
 
         private static void AfterActorBirth(object __instance) { CorrectSafely(__instance, "unit", __instance); }
